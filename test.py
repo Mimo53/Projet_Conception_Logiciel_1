@@ -4,4 +4,3 @@
 print("Pitié")
 
 # Une seule ligne vide à la fin du fichier
-
