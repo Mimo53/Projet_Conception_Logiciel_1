@@ -1,5 +1,8 @@
 # Projet Info 2A : ENSAI TCG 
 
+
+Le point env est à créer.
+
 Après l'essort de pokemon TCG, nous avons eu l'incroyable idée de pouvoir ouvrir des boosters et voir les têtes détournés de différents élèves à des buts humouristiques.
 Nous avons bien évidémment demander si la diffusion de ces photos consternantes étaient possibles.
 
