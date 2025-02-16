@@ -1,7 +1,7 @@
 from typing import List
 
-from Metiers.Card import Card
-from Metiers.Collection import Collection
+from models.Card import Card
+from models.Collection import Collection
 
 
 class CollectionService:
