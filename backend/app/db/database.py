@@ -13,6 +13,8 @@ DATABASE_HOST = os.getenv("DATABASE_HOST")
 DATABASE_PORT = os.getenv("DATABASE_PORT")
 DATABASE_NAME = os.getenv("DATABASE_NAME")
 
+print(f"User: {DATABASE_USER}, Password: {DATABASE_PASSWORD}, Host: {DATABASE_HOST}, Port: {DATABASE_PORT}, Name: {DATABASE_NAME}")
+
 SQLALCHEMY_DATABASE_URL = f"postgresql://{DATABASE_USER}:{DATABASE_PASSWORD}@{DATABASE_HOST}:{DATABASE_PORT}/{DATABASE_NAME}"
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
@@ -25,3 +27,4 @@ def get_db():
         yield db
     finally:
         db.close()
+

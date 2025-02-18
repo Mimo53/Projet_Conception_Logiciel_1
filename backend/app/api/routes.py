@@ -5,6 +5,7 @@ from ..db.database import get_db
 
 router = APIRouter()
 
+
 @router.get("/check-db-connection/")
 def check_db_connection(db: Session = Depends(get_db)):
     try:
