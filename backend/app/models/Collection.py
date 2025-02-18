@@ -1,6 +1,6 @@
 from typing import List
 
-from Metiers.Card import Card
+from models.Card import Card
 
 
 class Collection:

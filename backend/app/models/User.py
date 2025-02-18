@@ -1,4 +1,4 @@
-from Metiers.Enums import Role
+from models.Enums import Role
 
 
 class User:

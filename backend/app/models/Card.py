@@ -1,4 +1,4 @@
-from Metiers.Enums import Rarity
+from models.Enums import Rarity
 
 
 class Card:
