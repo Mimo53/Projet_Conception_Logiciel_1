@@ -2,6 +2,7 @@ from fastapi import FastAPI
 
 from backend.app.api.routes import router
 from backend.app.db.database import Base, engine
+from backend.app.models.User import User,UserBase
 
 app = FastAPI()
 
