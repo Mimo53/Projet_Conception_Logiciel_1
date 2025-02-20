@@ -22,3 +22,9 @@ class UserBase(BaseModel):
     password: str
     role: str
     e_mail: str
+
+
+class UserUpdate(BaseModel):
+    new_username: str | None = None
+    new_password: str | None = None
+    new_email: EmailStr | None = None 
