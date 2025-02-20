@@ -5,7 +5,7 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 
 from backend.app.db.database import Base
-from backend.app.models.Card import Card, CardBase
+from backend.app.models.Card import Card, CardBase, collection_cards
 
 
 class Collection(Base):
@@ -14,7 +14,8 @@ class Collection(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True)
 
-    cards = relationship("Card", back_populates="collection")
+    cards = relationship("Card", secondary=collection_cards, back_populates="collections")
+    boosters = relationship("Booster", back_populates="collection")
 
 
 class CollectionBase(BaseModel):
