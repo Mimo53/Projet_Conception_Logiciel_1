@@ -21,18 +21,6 @@ class Card(Base):
     name = Column(String, index=True)
     image_url = Column(String)
     rarity = Column(Enum(Rarity))
-    collection_id = Column(Integer, ForeignKey('collections.id'))
-    is_approved = Column(Boolean, default=False)
-    collection = relationship("Collection", back_populates="cards")
-
-
-class Card(Base):
-    __tablename__ = 'cards'
-
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, index=True)
-    image_url = Column(String)
-    rarity = Column(Enum(Rarity))
     is_approved = Column(Boolean, default=False)
 
     collections = relationship("Collection", secondary=collection_cards, back_populates="cards")

@@ -2,7 +2,7 @@ from pydantic import BaseModel, EmailStr
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 
-from backend.app.db.database import Base, get_db
+from backend.app.db.database import Base
 from backend.app.models.Enums import Role
 
 

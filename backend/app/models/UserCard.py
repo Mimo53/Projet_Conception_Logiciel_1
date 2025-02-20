@@ -1,17 +1,17 @@
 from typing import Optional
 
 from pydantic import BaseModel
-from sqlalchemy import Boolean, Column, ForeignKey, Integer
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
-from .database import Base
+from backend.app.db.database import Base
 
 
 class UserCard(Base):
     __tablename__ = 'user_cards'
 
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey('users.id'))
+    user_id = Column(String, ForeignKey('User.username'))
     card_id = Column(Integer, ForeignKey('cards.id'))
     obtained = Column(Boolean, default=False)
 

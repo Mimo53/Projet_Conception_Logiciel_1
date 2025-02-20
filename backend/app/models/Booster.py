@@ -5,7 +5,7 @@ from sqlalchemy import Column, ForeignKey, Integer, String, Table
 from sqlalchemy.orm import relationship
 
 from backend.app.db.database import Base
-from backend.app.models.Card import Card, CardBase
+from backend.app.models.Card import CardBase
 
 booster_cards = Table(
     'booster_cards', Base.metadata,
