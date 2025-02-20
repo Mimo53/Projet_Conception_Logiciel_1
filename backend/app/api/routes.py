@@ -71,18 +71,57 @@ async def read_collections(skip: int = 0, limit: int = 10, db: Session = Depends
 
 
 ##Routes Booster
-from backend.app.models.Booster import Booster, BoosterBase
+
+from backend.app.services.BoosterService import BoosterService
 
 
-@router.post("/boosters/")
-async def create_booster(booster: BoosterBase, db: Session = Depends(get_db)):
-    db_booster = Booster(name=booster.name)
-    db.add(db_booster)
+#ouvrir booster
+@router.post("/open_booster/")
+async def open_booster(user_id: str, collection_id: int, db: Session = Depends(get_db)):
+    collection = db.query(Collection).filter(Collection.id == collection_id).first()
+    if not collection:
+        raise HTTPException(status_code=404, detail="Collection not found")
+
+    try:
+        cards = BoosterService.open_booster(user_id, collection, db=db)
+        return {"cards": cards}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    
+
+
+# Soumission/Approbation/Rejet des cartes
+
+@router.post("/collections/{collection_id}/cards/")
+async def add_card_to_collection(collection_id: int, name: str, image_url: str, rarity: str, db: Session = Depends(get_db)):
+    db_card = Card(
+        name=name,
+        image_url=image_url,
+        rarity=rarity,
+        collection_id=collection_id
+    )
+    db.add(db_card)
     db.commit()
-    db.refresh(db_booster)
-    return {"message": "Booster créé avec succès", "booster": db_booster}
+    db.refresh(db_card)
+    return {"message": "Carte ajoutée avec succès", "card": db_card}
 
-@router.get("/boosters/")
-async def read_boosters(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-    boosters = db.query(Booster).offset(skip).limit(limit).all()
-    return boosters
+@router.put("/cards/{card_id}/approve/")
+async def approve_card(card_id: int, db: Session = Depends(get_db)):
+    db_card = db.query(Card).filter(Card.id == card_id).first()
+    if not db_card:
+        raise HTTPException(status_code=404, detail="Carte non trouvée")
+
+    db_card.is_approved = True
+    db.commit()
+    db.refresh(db_card)
+    return {"message": "Carte approuvée avec succès", "card": db_card}
+
+@router.delete("/cards/{card_id}/reject/")
+async def reject_card(card_id: int, db: Session = Depends(get_db)):
+    db_card = db.query(Card).filter(Card.id == card_id).first()
+    if not db_card:
+        raise HTTPException(status_code=404, detail="Carte non trouvée")
+
+    db.delete(db_card)
+    db.commit()
+    return {"message": "Carte rejetée avec succès"}
