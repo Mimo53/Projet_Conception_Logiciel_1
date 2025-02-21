@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './Page2.css';  // Assure-toi d'avoir le fichier CSS pour cette page
+import './Page2.css';  
 import videoFile from '../assets/Andre.mp4';  // Importer la vidéo
 import monImage from '../assets/Photos/Dorian.png'; // Importer l'image
 import audioFile from '../assets/Son_Andre.ogg';
@@ -8,12 +8,16 @@ import audioFile from '../assets/Son_Andre.ogg';
 function Page2() {
   return (
     <div className="page2-container">
-      <h1>Les dévellopeur de cette apllication sont : !</h1>
+      <h1>Les développeurs de cette application sont : !</h1>
       <p>Le meilleur danceur tik tok, SOCARD Andréééééé </p>
       
       {/* Balise vidéo */}
       <video
         width="20%"
+<<<<<<< HEAD
+=======
+        controls
+>>>>>>> 2eb3c943a161e3b28bd8374a710216f277a2ef68
         autoPlay
         loop
         onError={(e) => console.error("Error loading video:", e)}

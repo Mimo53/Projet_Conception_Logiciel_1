@@ -2,15 +2,18 @@
 
 /* Centrer le contenu horizontalement et verticalement */
 .home-container {
-    display: flex;
-    justify-content: center;  /* Centre horizontalement */
-    align-items: center;      /* Centre verticalement */
-    height: 100vh;            /* Prendre toute la hauteur de la fenêtre */
-    width: 100vh;
-    flex-direction: column;   /* Les éléments seront alignés verticalement */
-    text-align: center;       /* Centre le texte à l'intérieur des éléments */
-    background-color: #0a0a0a; /* Optionnel : couleur de fond */
-  }
+  display: flex;
+  justify-content: center;  /* Centre horizontalement */
+  align-items: center;      /* Centre verticalement */
+  height: 100vh;            /* Prendre toute la hauteur de la fenêtre */
+  width: 100vw;             /* Prendre toute la largeur de la fenêtre */
+  flex-direction: column;   /* Les éléments seront alignés verticalement */
+  text-align: center;       /* Centre le texte à l'intérieur des éléments */
+  background-image: url('../assets/Photos/Momo.png'); /* L'image comme fond */
+  background-repeat: repeat; /* Répéter l'image pour créer l'effet mosaïque */
+  background-size: 150px 150px;  /* Ajuster la taille des carreaux de la mosaïque */
+  background-color: #0a0a0a; /* Optionnel : couleur de fond si l'image ne charge pas */
+}
   
   /* Style pour le bouton (facultatif) */
   button {
@@ -18,7 +21,7 @@
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
-    background-color: #616060;
+    background-color: #616061;
     color: white;
     border: none;
     border-radius: 5px;
