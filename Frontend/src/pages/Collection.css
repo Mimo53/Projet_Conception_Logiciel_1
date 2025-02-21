@@ -30,3 +30,19 @@ button {
 button:hover {
     background-color: #45a049;
 }
+
+/* Keyframes pour l'animation de rotation */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Appliquer l'animation à l'image */
+.Collection-container img {
+    width: 30%; /* Ajuste la largeur de l'image */
+    animation: spin 3s linear infinite;
+}
