@@ -1,7 +1,7 @@
-/* src/pages/Page2.css */
+/* src/pages/Booster.css */
 
 /* Centrer le contenu horizontalement et verticalement */
-.page2-container {
+.Booster-container {
     display: flex;
     justify-content: center;   /* Centre horizontalement */
     align-items: center;       /* Centre verticalement */

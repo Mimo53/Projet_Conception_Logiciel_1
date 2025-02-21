@@ -8,8 +8,8 @@ function HomePage() {
     <div className="home-container">
       <img src={monImage} alt="Momo" className="home-image" />
       <h1>Bienvenue sur ENSAI TCG</h1>
-      <Link to="/page2">
-        <button>Surprise</button>
+      <Link to="/Accueil">
+        <button>Commencer</button>
       </Link>
     </div>
   );

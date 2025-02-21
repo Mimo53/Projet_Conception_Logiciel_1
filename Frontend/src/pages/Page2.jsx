@@ -27,7 +27,7 @@ function Page2() {
       <p>Et voilà le meilleur pilote de l'ENSAI, BACHET Doriaaaaaaaaan </p>
       <img src={monImage} alt="Description de l'image" width="40%" />
       {/* Bouton pour revenir à la page d'accueil */}
-      <Link to="/">
+      <Link to="/Accueil">
         <button>Retour à l'accueil</button>
       </Link>
       <audio autoPlay loop>
