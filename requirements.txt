@@ -2,5 +2,11 @@ flake8
 black
 pylint
 requests
-unicorn
-fastapi
+uvicorn
+fastapi[standard]
+sqlalchemy
+psycopg2-binary
+python-dotenv
+passlib[bcrypt]
+python-jose[cryptography]
+fastapi-mail
