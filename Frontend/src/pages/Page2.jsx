@@ -26,6 +26,7 @@ function Page2() {
 
       <p>Et voilà le meilleur pilote de l'ENSAI, BACHET Doriaaaaaaaaan </p>
       <img src={monImage} alt="Description de l'image" width="40%" />
+      <p>(Et Momo évidemment, voir page de bienvenue)</p>
       {/* Bouton pour revenir à la page d'accueil */}
       <Link to="/Accueil">
         <button>Retour à l'accueil</button>
@@ -34,6 +35,7 @@ function Page2() {
         <source src={audioFile} type="audio/mp3" />
         Votre navigateur ne supporte pas la balise audio.
       </audio>
+      
     </div>
   );
 }

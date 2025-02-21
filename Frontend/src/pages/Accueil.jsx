@@ -19,7 +19,7 @@ function Accueil() {
         </Link>
 
         <Link to="/">
-          <button className="bienvenue-button">Page de bienvenue</button>
+          <button className="bienvenue-button">La magnifique page de bienvenue</button>
         </Link>
 
         <Link to="/Booster">
