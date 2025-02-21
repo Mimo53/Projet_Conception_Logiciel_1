@@ -1,0 +1,30 @@
+/* src/pages/Page2.css */
+
+/* Centrer le contenu horizontalement et verticalement */
+.page2-container {
+    display: flex;
+    justify-content: center;   /* Centre horizontalement */
+    align-items: center;       /* Centre verticalement */
+    height: 100vh;             /* Hauteur de 100% de la fenêtre */
+    width: 100vh;               /* Largeur de 100% de la fenêtre */
+    flex-direction: column;    /* Aligne les éléments verticalement */
+    text-align: center;        /* Centre le texte à l'intérieur des éléments */
+    background-color: #080808; /* Optionnel : couleur de fond */
+  }
+  
+  /* Style pour le bouton (facultatif) */
+  button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
