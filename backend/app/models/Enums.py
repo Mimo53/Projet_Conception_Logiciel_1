@@ -4,6 +4,7 @@ from enum import Enum
 class Role(Enum):
     ADMIN = "Admin"
     USER = "User"
+    clown = "clown"
 
 
 class Rarity(Enum):

@@ -1,5 +1,5 @@
 from pydantic import BaseModel, EmailStr
-from sqlalchemy import Column, String
+from sqlalchemy import Column, String, Enum
 from sqlalchemy.orm import relationship
 
 from backend.app.db.database import Base
@@ -11,10 +11,10 @@ class User(Base):
 
     username = Column(String, primary_key=True, index = True)
     password = Column(String, index=True)
-    role = Column(String, index=True)
+    role = Column(Enum(Role))
     e_mail = Column(String, index=True)
 
-    user_cards = relationship("UserCard", back_populates =" user")
+    user_cards = relationship("UserCard", back_populates ="user") 
     
 
 class UserBase(BaseModel):

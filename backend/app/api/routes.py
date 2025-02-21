@@ -7,6 +7,8 @@ from sqlalchemy.orm import Session
 
 from backend.app.db.database import get_db
 from backend.app.models.User import User, UserBase, UserUpdate
+from sqlalchemy import text
+
 
 # Instancier un contexte pour le hachage du mot de passe
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -20,24 +22,33 @@ router = APIRouter()
 @router.get("/check-db-connection/")
 def check_db_connection(db: Session = Depends(get_db)):
     try:
-        # Essayer de faire une requête simple pour vérifier la connexion
-        db.execute("SELECT 1")
+        # Utilisation de text() pour exécuter une requête SQL brute
+        db.execute(text("SELECT 1"))
         return {"message": "Connexion à la base de données réussie !"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erreur de connexion à la base de données : {str(e)}")
-    
 
-@router.post("/nouvelle_utilisateur/")
-async def create_user(user: UserBase, db: Session = Depends(get_db)):
+
+@router.post("/new_users/")
+def create_user(user: UserBase, db: Session = Depends(get_db)):
+    # Vérifier si l'utilisateur existe déjà
+    existing_user = db.query(User).filter(User.username == user.username).first()
+    if existing_user:
+        raise HTTPException(status_code=400, detail="L'utilisateur existe déjà")
+
+    # Création d'un nouvel utilisateur
     db_user = User(
         username=user.username,
-        password=hash_password(user.password),
+        password=hash_password(user.password),  # Assure-toi que cette fonction existe
         role=user.role,
-        e_mail=user.e_mail
+        e_mail=user.e_mail,
+        user_cards=[]  # Initialisation de la relation
     )
+
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
+
     return {"message": "Utilisateur créé avec succès", "user": db_user}
 
 @router.put("/update_user/{username}")  
@@ -55,13 +66,6 @@ async def update_user(username: str, update_data: UserUpdate, db: Session = Depe
         if existing_user:
             raise HTTPException(status_code=400, detail="Ce nom d'utilisateur est déjà pris")
         db_user.username = update_data.new_username
-    
-    # Vérification et mise à jour de l'email
-    if update_data.new_email:
-        existing_email = db.query(User).filter(User.e_mail == update_data.new_email).first()
-        if existing_email:
-            raise HTTPException(status_code=400, detail="Cet email est déjà utilisé")
-        db_user.e_mail = update_data.new_email
 
     # Vérification et mise à jour du mot de passe (haché)
     if update_data.new_password:
