@@ -1,37 +1,68 @@
-from typing import List
-
-from fastapi import APIRouter, Depends, HTTPException
+from typing import List, Annotated
+from fastapi import APIRouter, Depends, HTTPException, status
 from passlib.context import CryptContext
 from sqlalchemy import Column, String
 from sqlalchemy.orm import Session
-
+from pydantic import BaseModel
+from datetime import timedelta, datetime
+from jose import jwt, JWTError
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from backend.app.db.database import get_db
 from backend.app.models.User import User, UserBase, UserUpdate
-from sqlalchemy import text
+from backend.app.models.UserCard import UserCard, UserCardBase
+from starlette import status
 
+# Configuration du JWT
+SECRET_KEY = "ma_super_cle_secrete"  # Change en production !
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30  # Expiration du token après 30 minutes
 
 # Instancier un contexte pour le hachage du mot de passe
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
+router = APIRouter()
+router_auth = APIRouter(
+    prefix='/auth',
+    tags=['auth']
+)
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+# Fonction pour vérifier le mot de passe
+def verify_password(plain_password, hashed_password):
+    return pwd_context.verify(plain_password, hashed_password)
+
+# Fonction pour hacher le mot de passe
 def hash_password(password: str):
     return pwd_context.hash(password)
 
-router = APIRouter()
+# Fonction pour créer un token JWT
+def create_access_token(data: dict, expires_delta: timedelta | None = None):
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.utcnow() + expires_delta
+    else:
+        expire = datetime.utcnow() + timedelta(minutes=15)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
 
-##Routes User
-@router.get("/check-db-connection/")
-def check_db_connection(db: Session = Depends(get_db)):
-    try:
-        # Utilisation de text() pour exécuter une requête SQL brute
-        db.execute(text("SELECT 1"))
-        return {"message": "Connexion à la base de données réussie !"}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Erreur de connexion à la base de données : {str(e)}")
+
+# Fonction pour authentifier un utilisateur
+def authenticate_user(username: str, password: str, db: Session):
+    user = db.query(User).filter(User.username == username).first()
+    if not user or not verify_password(password, user.password):
+        return None
+    return user
 
 
-@router.post("/new_users/")
-def create_user(user: UserBase, db: Session = Depends(get_db)):
-    # Vérifier si l'utilisateur existe déjà
+# Route pour créer un utilisateur
+@router_auth.post("/register", status_code=status.HTTP_201_CREATED)
+async def create_user(user: UserBase, db: Session = Depends(get_db)):
+    # Vérification si l'utilisateur existe déjà
     existing_user = db.query(User).filter(User.username == user.username).first()
     if existing_user:
         raise HTTPException(status_code=400, detail="L'utilisateur existe déjà")
@@ -39,10 +70,9 @@ def create_user(user: UserBase, db: Session = Depends(get_db)):
     # Création d'un nouvel utilisateur
     db_user = User(
         username=user.username,
-        password=hash_password(user.password),  # Assure-toi que cette fonction existe
+        password=hash_password(user.password),
         role=user.role,
         e_mail=user.e_mail,
-        user_cards=[]  # Initialisation de la relation
     )
 
     db.add(db_user)
@@ -51,11 +81,26 @@ def create_user(user: UserBase, db: Session = Depends(get_db)):
 
     return {"message": "Utilisateur créé avec succès", "user": db_user}
 
-@router.put("/update_user/{username}")  
-async def update_user(username: str, update_data: UserUpdate, db: Session = Depends(get_db)):
-    # Recherche l'utilisateur dans la base de données
+# Route pour obtenir un token d'accès
+@router_auth.post("/token", response_model=Token)
+async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+    user = authenticate_user(form_data.username, form_data.password, db)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Nom d'utilisateur ou mot de passe incorrect",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": user.username}, expires_delta=access_token_expires
+    )
+    return {"access_token": access_token, "token_type": "bearer"}
+
+# Route pour mettre à jour un utilisateur
+@router_auth.put("/update_user/{username}")
+async def updrouter_authate_user(username: str, update_data: UserUpdate, db: Session = Depends(get_db)):
     db_user = db.query(User).filter(User.username == username).first()
-    print(db.query(User).all())  # Vérifie tous les utilisateurs présents
 
     if not db_user:
         raise HTTPException(status_code=404, detail="Utilisateur non trouvé")
@@ -75,10 +120,43 @@ async def update_user(username: str, update_data: UserUpdate, db: Session = Depe
     db.commit()
     db.refresh(db_user)
     
-    return {"message": "Utilisateur mis à jour avec succès"}
+    return {"message": "Utilisateur mis à jour avec succès", "user": db_user}
+
+# Route pour vérifier la connexion à la base de données
+@router.get("/check-db-connection/")
+def check_db_connection(db: Session = Depends(get_db)):
+    try:
+        db.execute("SELECT 1")
+        return {"message": "Connexion à la base de données réussie !"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erreur de connexion à la base de données : {str(e)}")
+
+oauth2bearer= OAuth2PasswordBearer(tokenUrl='auth/token')
+async def get_current_user(token: Annotated[str, Depends(oauth2bearer)]):
+    try:
+        print(f"Token: {token}")  # Log pour afficher le token
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        print(f"Decoded Payload: {payload}")  # Log pour afficher les données du payload
+        
+        username: str = payload.get('sub')
+        
+        if username is None:
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                                detail="Could not validate user")
+        
+        return {"username": username}
+    except JWTError:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                            detail="Could not validate user")
+
 
 ##Routes Card
 from backend.app.models.Card import Card, CardBase
+db_dependency = Annotated[Session,Depends(get_db)]
+user_dependency= Annotated[dict,Depends(get_current_user)]
+@router_auth.get("/", status_code=status.HTTP_200_OK)
+async def user(user: user_dependency, db: db_dependency):
+    return {"User": user}
 
 
 @router.post("/cards/")
