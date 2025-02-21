@@ -1,10 +1,12 @@
+from typing import List
+
 from fastapi import APIRouter, Depends, HTTPException
+from passlib.context import CryptContext
 from sqlalchemy import Column, String
 from sqlalchemy.orm import Session
 
 from backend.app.db.database import get_db
 from backend.app.models.User import User, UserBase, UserUpdate
-from passlib.context import CryptContext
 
 # Instancier un contexte pour le hachage du mot de passe
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -166,3 +168,25 @@ async def reject_card(card_id: int, db: Session = Depends(get_db)):
     db.delete(db_card)
     db.commit()
     return {"message": "Carte rejetée avec succès"}
+
+#Route obtention de carte
+from backend.app.models.UserCard import UserCard, UserCardBase
+
+
+@router.post("/users/{user_id}/cards/{card_id}/obtain/", response_model=UserCardBase)
+async def obtain_card(user_id: int, card_id: int, db: Session = Depends(get_db)):
+    user_card = db.query(UserCard).filter(UserCard.user_id == user_id, UserCard.card_id == card_id).first()
+    if not user_card:
+        user_card = UserCard(user_id=user_id, card_id=card_id, obtained=True)
+        db.add(user_card)
+    else:
+        user_card.obtained = True
+    db.commit()
+    db.refresh(user_card)
+    return user_card
+
+#Endpoint collection d'un utilisateur
+@router.get("/users/{user_id}/obtained_cards/", response_model=List[UserCardBase])
+async def get_user_obtained_cards(user_id: int, db: Session = Depends(get_db)):
+    user_cards = db.query(UserCard).filter(UserCard.user_id == user_id, UserCard.obtained == True).all()
+    return user_cards

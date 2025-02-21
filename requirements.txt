@@ -10,3 +10,5 @@ python-dotenv
 passlib[bcrypt]
 python-jose[cryptography]
 fastapi-mail
+unicorn
+
