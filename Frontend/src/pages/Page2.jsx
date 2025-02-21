@@ -13,14 +13,13 @@ function Page2() {
       
       {/* Balise vidéo */}
       <video
-        width="60%"
-        controls
+        width="20%"
         autoPlay
         loop
         onError={(e) => console.error("Error loading video:", e)}
         onLoadedData={() => console.log("Video loaded successfully")}
       >
-        <source src={videoFile} type="Andre/mp4" />
+        <source src={videoFile} type="video/mp4" />
         Votre navigateur ne supporte pas la balise vidéo.
       </video>
 
