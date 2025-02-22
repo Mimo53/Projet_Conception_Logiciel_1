@@ -1,56 +1,55 @@
 /* Login.css */
 .login-container {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  width: 100vh; /* Utilise toute la largeur disponible */
-  background-color: #f7f7f7;
-  padding: 20px;
+  width: 191vh;
+  background-color: #f4f6f9;
 }
 
-.login-container h2 {
-  font-size: 24px;
-  color: #333;
-  margin-bottom: 20px;
-  text-align: center; /* Centre le titre */
-}
-
-.login-container form {
+.login-card {
   width: 100%;
-  max-width: 350px; /* Réduit la largeur max du formulaire */
+  max-width: 400px;
   background-color: #fff;
-  padding: 20px;
+  padding: 30px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
-.login-container label {
+.login-card h2 {
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.input-container {
+  margin-bottom: 20px;
+}
+
+.input-container label {
   font-size: 14px;
   color: #555;
-  margin-bottom: 6px;
   display: block;
-  text-align: center; /* Centre les labels */
+  margin-bottom: 8px;
 }
 
-.login-container input {
-  width: 90%; /* Réduit la largeur des champs input */
+.input-container input {
+  width: 90%;
   padding: 12px;
-  margin-bottom: 16px;
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 14px;
-  margin-left: auto;
-  margin-right: auto; /* Centre les champs input */
+  transition: border-color 0.3s ease;
 }
 
-.login-container input:focus {
+.input-container input:focus {
   border-color: #4CAF50;
   outline: none;
 }
 
-.login-container button {
+.submit-button {
   width: 100%;
   padding: 12px;
   background-color: #4CAF50;
@@ -59,29 +58,36 @@
   border-radius: 4px;
   font-size: 16px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.login-container button:hover {
+.submit-button:hover {
   background-color: #45a049;
 }
 
-.login-container .error-message {
+.error-message {
   color: red;
   font-size: 14px;
   margin-bottom: 16px;
-  text-align: center; /* Centre l'erreur */
 }
 
-.login-container .link-container {
-  text-align: center;
-  margin-top: 10px;
+.link-container {
+  margin-top: 20px;
 }
 
-.login-container .link-container a {
+.link-container span {
+  font-size: 14px;
+  color: #555;
+}
+
+.link-container button {
+  background-color: transparent;
   color: #007bff;
-  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
 }
 
-.login-container .link-container a:hover {
+.link-container button:hover {
   text-decoration: underline;
 }

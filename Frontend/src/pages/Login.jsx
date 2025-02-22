@@ -1,53 +1,59 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+// src/pages/Login.jsx
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import './Login.css';  // Assurez-vous que le fichier CSS est bien importé
 
 function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
-    // Simulation de la logique d'authentification
-    if (email === "user@example.com" && password === "password") {
-      navigate('/Accueil'); // Redirection après une connexion réussie
-    } else {
-      setError("Identifiants incorrects");
+    try {
+      // Envoie la requête pour se connecter
+      await axios.post("/api/auth/login", { email, password });
+
+      // Redirige l'utilisateur vers la page d'accueil après la connexion
+      navigate("/Accueil");
+    } catch (err) {
+      setError("Identifiants incorrects. Essayez à nouveau.");
     }
   };
 
   return (
     <div className="login-container">
-      <h2>Connexion</h2>
-      <form onSubmit={handleLogin}>
-        {error && <div className="error-message">{error}</div>}
-        
-        <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        
-        <label htmlFor="password">Mot de passe</label>
-        <input
-          type="password"
-          id="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-
-        <button type="submit">Se connecter</button>
-      </form>
-
-      <div className="link-container">
-        <p>Pas encore inscrit ? <a href="/register">Créer un compte</a></p>
+      <div className="login-card">
+        <h2>Connexion</h2>
+        <form onSubmit={handleLogin}>
+          <div className="input-container">
+            <label>Email</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="input-container">
+            <label>Mot de passe</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          {error && <div className="error-message">{error}</div>}
+          <button type="submit" className="submit-button">Se connecter</button>
+        </form>
+        <div className="link-container">
+          <span>Pas encore de compte ? </span>
+          <button onClick={() => navigate("/register")}>S'inscrire</button>
+        </div>
       </div>
     </div>
   );

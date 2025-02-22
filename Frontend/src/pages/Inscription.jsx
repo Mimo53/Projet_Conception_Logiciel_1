@@ -32,49 +32,50 @@ function Register() {
   };
 
   return (
-    <div className="inscription-container">
-      <h2>S'inscrire</h2>
-      <form onSubmit={handleRegister}>
-        <div className="input-container">
-          <label>Nom d'utilisateur</label>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </div>
-        <div className="input-container">
-          <label>Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div className="input-container">
-          <label>Mot de passe</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <div className="input-container">
-          <label>Rôle</label>
-          <select value={role} onChange={(e) => setRole(e.target.value)}>
-            <option value="user">Utilisateur</option>
-            <option value="admin">Administrateur</option>
-          </select>
-        </div>
-        {error && <div className="error-message">{error}</div>}
-        <button type="submit">S'inscrire</button>
-      </form>
-      <div className="link-container">
-        <span>Déjà un compte ? </span>
-        <button onClick={() => navigate("/login")}>Se connecter</button>
+    <div className="register-container">
+      <div className="register-card">
+        <h2>Créer un compte</h2>
+        <form onSubmit={handleRegister} className="form-container">
+          <div className="input-container">
+            <label>Nom d'utilisateur</label>
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </div>
+          <div className="input-container">
+            <label>Email</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="input-container">
+            <label>Mot de passe</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <div className="input-container">
+            <label>Rôle</label>
+            <select value={role} onChange={(e) => setRole(e.target.value)}>
+              <option value="user">Utilisateur</option>
+              <option value="admin">Administrateur</option>
+            </select>
+          </div>
+          {error && <div className="error-message">{error}</div>}
+          <div className="button-container">
+            <button type="submit" className="submit-button">S'inscrire</button>
+            <button onClick={() => navigate("/login")} className="link-button">Se connecter</button>
+          </div>
+        </form>
       </div>
     </div>
   );
