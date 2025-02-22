@@ -1,11 +1,11 @@
 from typing import List, Annotated
-from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks
+from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks, File, UploadFile
 from passlib.context import CryptContext
 from sqlalchemy import Column, String
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from datetime import timedelta, datetime
-from jose import jwt, JWTError
+from jose import jwt, JWTError,ExpiredSignatureError
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from backend.app.db.database import get_db
 from backend.app.models.User import User, UserBase, UserUpdate
@@ -13,6 +13,10 @@ from backend.app.models.UserCard import UserCard, UserCardBase
 from starlette import status
 from fastapi_mail import FastMail, MessageSchema
 from backend.app.models.mail import conf
+from io import BytesIO
+from email.mime.image import MIMEImage  # Importer MIMEImage pour manipuler les images
+import os 
+from tempfile import NamedTemporaryFile
 
 # Configuration du JWT
 SECRET_KEY = "ma_super_cle_secrete"  # Change en production !
@@ -27,6 +31,8 @@ router_auth = APIRouter(
     prefix='/auth',
     tags=['auth']
 )
+
+fm = FastMail(conf)
 
 class Token(BaseModel):
     access_token: str
@@ -107,7 +113,6 @@ async def send_verification_email(email: str, username: str):
         subtype="plain"
     )
 
-    fm = FastMail(conf)
     await fm.send_message(message)
 
 @router_auth.get("/verify-email/{username}")
@@ -119,9 +124,6 @@ async def verify_email(username: str, db: Session = Depends(get_db)):
 
     # Ici, tu pourrais ajouter un champ "is_verified" dans le modèle User et le mettre à True
     return {"message": f"L'adresse e-mail de {username} a été vérifiée avec succès !"}
-
-
-
 
 # Route pour obtenir un token d'accès
 @router_auth.post("/token", response_model=Token)
@@ -164,6 +166,7 @@ async def updrouter_authate_user(username: str, update_data: UserUpdate, db: Ses
     
     return {"message": "Utilisateur mis à jour avec succès", "user": db_user}
 
+
 # Route pour vérifier la connexion à la base de données
 @router.get("/check-db-connection/")
 def check_db_connection(db: Session = Depends(get_db)):
@@ -174,23 +177,77 @@ def check_db_connection(db: Session = Depends(get_db)):
         raise HTTPException(status_code=500, detail=f"Erreur de connexion à la base de données : {str(e)}")
 
 oauth2bearer= OAuth2PasswordBearer(tokenUrl='auth/token')
-async def get_current_user(token: Annotated[str, Depends(oauth2bearer)]):
+async def get_current_user(token: str = Depends(oauth2bearer), db: Session = Depends(get_db)):
     try:
         print(f"Token: {token}")  # Log pour afficher le token
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         print(f"Decoded Payload: {payload}")  # Log pour afficher les données du payload
-        
-        username: str = payload.get('sub')
-        
+
+        username: str = payload.get("sub")
+
         if username is None:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                                 detail="Could not validate user")
-        
-        return {"username": username}
+
+        # Récupérer l'utilisateur à partir de la base de données en utilisant le nom d'utilisateur
+        user = db.query(User).filter(User.username == username).first()
+
+        if user is None:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+        # Retourne un dictionnaire avec le nom d'utilisateur et l'email (utiliser e_mail)
+        return {"username": username, "email": user.e_mail}  # Utilisation correcte de e_mail
+
     except JWTError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                             detail="Could not validate user")
 
+async def send_email_with_attachment(file_content: bytes):
+    try:
+        # Créer un fichier temporaire en mémoire avec le contenu du fichier
+        with NamedTemporaryFile(delete=False, mode="wb") as tmp_file:
+            tmp_file.write(file_content)
+            tmp_file_path = tmp_file.name
+        
+        # Créer un objet message avec l'email du destinataire
+        message = MessageSchema(
+            subject="Voici l'image que vous avez envoyée",
+            recipients=[conf.MAIL_USERNAME],  # L'adresse email de destination
+            body="Voici l'image que vous avez envoyée en pièce jointe.",
+            subtype="html",
+            attachments=[{
+                "file": tmp_file_path,  # Le fichier temporaire
+                "filename": "image.jpg",  # Nom du fichier
+                "type": "image/jpeg"  # Type MIME de l'image
+            }]
+        )
+
+        # Envoi du message
+        await fm.send_message(message)
+        print("Email envoyé à l'équipe d'ENSAI TCG avec l'image.")
+        
+        # Supprimer le fichier temporaire après l'envoi de l'email
+        os.remove(tmp_file_path)
+        
+    except Exception as e:
+        print(f"Erreur lors de l'envoi de l'email: {e}")
+
+# Route pour recevoir l'image et l'envoyer par email
+@router.post("/upload-and-send/")
+async def upload_and_send(background_tasks: BackgroundTasks, file: UploadFile = File(...)):
+    """Recevoir un fichier image et l'envoyer par email."""
+    
+    # Vérification du type de fichier (image)
+    if file.content_type not in ["image/jpeg", "image/png"]:
+        raise HTTPException(status_code=400, detail="Format de fichier non supporté")
+
+    # Lire immédiatement le contenu du fichier (en mémoire)
+    file_content = await file.read()
+
+    # Ajouter l'envoi de l'email en tâche de fond
+    background_tasks.add_task(send_email_with_attachment, file_content=file_content)
+
+    return {"message": "L'image a été reçue et sera envoyée par email."}
 
 ##Routes Card
 from backend.app.models.Card import Card, CardBase
@@ -198,8 +255,8 @@ db_dependency = Annotated[Session,Depends(get_db)]
 user_dependency= Annotated[dict,Depends(get_current_user)]
 @router_auth.get("/", status_code=status.HTTP_200_OK)
 async def user(user: user_dependency, db: db_dependency):
+    # Affiche le nom d'utilisateur et l'email
     return {"User": user}
-
 
 @router.post("/cards/")
 async def create_card(card: CardBase, db: Session = Depends(get_db)):
