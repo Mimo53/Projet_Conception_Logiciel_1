@@ -1,5 +1,5 @@
 from typing import List, Annotated
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks
 from passlib.context import CryptContext
 from sqlalchemy import Column, String
 from sqlalchemy.orm import Session
@@ -11,6 +11,8 @@ from backend.app.db.database import get_db
 from backend.app.models.User import User, UserBase, UserUpdate
 from backend.app.models.UserCard import UserCard, UserCardBase
 from starlette import status
+from fastapi_mail import FastMail, MessageSchema
+from backend.app.models.mail import conf
 
 # Configuration du JWT
 SECRET_KEY = "ma_super_cle_secrete"  # Change en production !
@@ -61,13 +63,13 @@ def authenticate_user(username: str, password: str, db: Session):
 
 # Route pour créer un utilisateur
 @router_auth.post("/register", status_code=status.HTTP_201_CREATED)
-async def create_user(user: UserBase, db: Session = Depends(get_db)):
-    # Vérification si l'utilisateur existe déjà
+async def create_user(user: UserBase, db: Session = Depends(get_db), background_tasks: BackgroundTasks = BackgroundTasks()):
+    # Vérifier si l'utilisateur existe déjà
     existing_user = db.query(User).filter(User.username == user.username).first()
     if existing_user:
         raise HTTPException(status_code=400, detail="L'utilisateur existe déjà")
 
-    # Création d'un nouvel utilisateur
+    # Créer l'utilisateur
     db_user = User(
         username=user.username,
         password=hash_password(user.password),
@@ -79,7 +81,47 @@ async def create_user(user: UserBase, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(db_user)
 
-    return {"message": "Utilisateur créé avec succès", "user": db_user}
+    # Envoyer l'e-mail de vérification en arrière-plan
+    if db_user.e_mail:
+        background_tasks.add_task(send_verification_email, db_user.e_mail, db_user.username)
+
+    return {"message": "Utilisateur créé avec succès, vérifiez votre e-mail", "user": db_user}
+
+async def send_verification_email(email: str, username: str):
+    verification_link = f"http://localhost:8000/verify-email/{username}"  # Lien de vérification
+
+    message = MessageSchema(
+        subject="Vérification de votre compte",
+        recipients=[email],  # Destinataire
+        body=f"""
+        Bonjour {username},
+
+        Merci de vous être inscrit sur notre plateforme !
+        Veuillez cliquer sur le lien suivant pour vérifier votre adresse e-mail :
+
+        {verification_link}
+
+        Cordialement,
+        L'équipe de support.
+        """,
+        subtype="plain"
+    )
+
+    fm = FastMail(conf)
+    await fm.send_message(message)
+
+@router_auth.get("/verify-email/{username}")
+async def verify_email(username: str, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.username == username).first()
+    
+    if not user:
+        raise HTTPException(status_code=404, detail="Utilisateur non trouvé")
+
+    # Ici, tu pourrais ajouter un champ "is_verified" dans le modèle User et le mettre à True
+    return {"message": f"L'adresse e-mail de {username} a été vérifiée avec succès !"}
+
+
+
 
 # Route pour obtenir un token d'accès
 @router_auth.post("/token", response_model=Token)
