@@ -6,7 +6,7 @@
     justify-content: center;   /* Centre horizontalement */
     align-items: center;       /* Centre verticalement */
     height: 160vh;             /* Hauteur de 100% de la fenêtre */
-    width: 191vh;               /* Largeur de 100% de la fenêtre */
+    width: 100vw;               /* Largeur de 100% de la fenêtre */
     flex-direction: column;    /* Aligne les éléments verticalement */
     text-align: center;        /* Centre le texte à l'intérieur des éléments */
     background-color: #080808; /* Optionnel : couleur de fond */
