@@ -6,6 +6,8 @@ import Page2 from './pages/Page2';
 import Accueil from './pages/Accueil';
 import Boosters from './pages/Booster';
 import Collection from './pages/Collection';
+import Login from './pages/Login'; // Ajout de la route pour Login
+import Register from './pages/Register'; // Ajout de la route pour Register
 
 function App() {
   return (
@@ -25,6 +27,12 @@ function App() {
 
         {/* Route pour la page de Collection */}
         <Route path="/Collection" element={<Collection />} />
+
+        {/* Route pour la page de connexion */}
+        <Route path="/login" element={<Login />} />
+
+        {/* Route pour la page d'inscription */}
+        <Route path="/register" element={<Register />} />
       </Routes>
     </Router>
   );

@@ -51,6 +51,16 @@ function Accueil() {
         <Link to="/Collection">
           <button>Collection</button>
         </Link>
+
+        {/* Nouveau bouton "Se connecter" */}
+        <Link to="/login">
+          <button className="login-button">Se connecter</button>
+        </Link>
+
+        {/* Nouveau bouton "S'inscrire" */}
+        <Link to="/register">
+          <button className="register-button">S'inscrire</button>
+        </Link>
       </div>
     </div>
   );
