@@ -21,7 +21,7 @@ app.add_middleware(
 
 @app.get("/api/hello")
 async def hello():
-    return {"message": "Bienvenue sur notre API FastAPI !"}
+    return {"message": "La connexion avec l'API est réussi, amuse toi bien sur ENSAI TCG !"}
 
 app.include_router(router)
 app.include_router(router_auth)
