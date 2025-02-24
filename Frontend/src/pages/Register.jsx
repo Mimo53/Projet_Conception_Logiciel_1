@@ -10,24 +10,34 @@ function Register() {
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("user");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError("");
 
     try {
       // Envoie la requête pour créer un nouvel utilisateur
       await axios.post("/api/auth/register", {
         username,
         password,
-        e_mail: email,
+        e_mail: email,  // Assurez-vous que le backend attend bien 'e_mail'
         role,
       });
 
       // Redirige l'utilisateur vers la page de connexion après l'inscription
       navigate("/login");
     } catch (err) {
-      setError("Erreur lors de la création de votre compte");
+      // Si une erreur détaillée est renvoyée par le backend
+      if (err.response && err.response.data.detail) {
+        setError(err.response.data.detail);
+      } else {
+        setError("Erreur lors de la création de votre compte");
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -72,8 +82,16 @@ function Register() {
           </div>
           {error && <div className="error-message">{error}</div>}
           <div className="button-container">
-            <button type="submit" className="submit-button">S'inscrire</button>
-            <button onClick={() => navigate("/login")} className="link-button">Se connecter</button>
+            <button type="submit" className="submit-button" disabled={loading}>
+              {loading ? "Inscription en cours..." : "S'inscrire"}
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate("/login")}
+              className="link-button"
+            >
+              Se connecter
+            </button>
           </div>
         </form>
       </div>

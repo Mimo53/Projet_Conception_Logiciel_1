@@ -15,10 +15,18 @@ function Login() {
 
     try {
       // Envoie la requête pour se connecter
-      await axios.post("/api/auth/login", { email, password });
+      const response = await axios.post("/api/auth/login", { email, password });
 
-      // Redirige l'utilisateur vers la page d'accueil après la connexion
-      navigate("/Accueil");
+      // Vérifie si le token est présent dans la réponse
+      if (response.data.token) {
+        // Stocke le token dans le localStorage
+        localStorage.setItem("token", response.data.token);
+
+        // Redirige l'utilisateur vers le Dashboard après la connexion
+        navigate("/dashboard");
+      } else {
+        setError("Erreur lors de la connexion. Réessayez.");
+      }
     } catch (err) {
       setError("Identifiants incorrects. Essayez à nouveau.");
     }
