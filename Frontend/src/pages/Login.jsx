@@ -2,10 +2,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import './Login.css';  // Assurez-vous que le fichier CSS est bien importé
+import './Login.css'; // Assurez-vous que le fichier CSS est bien importé
 
 function Login() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");  // Utilisation de username
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -14,13 +14,22 @@ function Login() {
     e.preventDefault();
 
     try {
-      // Envoie la requête pour se connecter
-      const response = await axios.post("/api/auth/login", { email, password });
+      // Utilisation de URLSearchParams pour formater les données
+      const formData = new URLSearchParams();
+      formData.append("username", username);
+      formData.append("password", password);
+
+      // Envoie la requête pour se connecter à FastAPI
+      const response = await axios.post("http://localhost:8000/auth/token", formData, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"  // Obligatoire pour FastAPI
+        }
+      });
 
       // Vérifie si le token est présent dans la réponse
-      if (response.data.token) {
+      if (response.data.access_token) {
         // Stocke le token dans le localStorage
-        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("token", response.data.access_token);
 
         // Redirige l'utilisateur vers le Dashboard après la connexion
         navigate("/dashboard");
@@ -38,11 +47,11 @@ function Login() {
         <h2>Connexion</h2>
         <form onSubmit={handleLogin}>
           <div className="input-container">
-            <label>Email</label>
+            <label>Nom d'utilisateur</label> {/* Changement de label */}
             <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="text" // Utilisation de "text" au lieu de "email"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               required
             />
           </div>
