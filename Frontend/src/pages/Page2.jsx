@@ -14,7 +14,6 @@ function Page2() {
       {/* Balise vidéo */}
       <video
         width="20%"
-        controls
         autoPlay
         loop
         onError={(e) => console.error("Error loading video:", e)}
