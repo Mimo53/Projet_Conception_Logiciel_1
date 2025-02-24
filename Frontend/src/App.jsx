@@ -8,6 +8,8 @@ import Boosters from './pages/Booster';
 import Collection from './pages/Collection';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Dashboard from './pages/Dashboard';  // Importation du Dashboard
+import PrivateRoute from './components/PrivateRoute';  // Importation de PrivateRoute
 
 function App() {
   return (
@@ -20,6 +22,16 @@ function App() {
         <Route path="/Collection" element={<Collection />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+
+        {/* Route protégée pour le Dashboard */}
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </Router>
   );
