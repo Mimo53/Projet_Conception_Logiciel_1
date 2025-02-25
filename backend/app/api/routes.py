@@ -254,6 +254,7 @@ async def upload_and_send(background_tasks: BackgroundTasks, file: UploadFile = 
 from backend.app.models.Card import Card, CardBase
 db_dependency = Annotated[Session,Depends(get_db)]
 user_dependency= Annotated[dict,Depends(get_current_user)]
+
 @router_auth.get("/", status_code=status.HTTP_200_OK)
 async def user(user: user_dependency, db: db_dependency):
     # Affiche le nom d'utilisateur et l'email
@@ -302,36 +303,35 @@ async def open_booster_and_add(user_id: str, db: Session = Depends(get_db)):
         user_cards.append({
             "id": card.id,
             "name": card.name,
-            "image_url": card.image_url,  # ✅ On récupère l'URL
-            "rarity": card.rarity.name  # ✅ Conversion en string pour JSON
+            "image_url": card.image_url,  
+            "rarity": card.rarity.name  
         })
 
     db.commit()
 
     return {"message": "Booster ouvert et cartes ajoutées à l'utilisateur.", "cards": user_cards}
 
+@router.get("/view_collections")
+async def view_collection(user_id: str, db: Session = Depends(get_db)):
+    # Récupérer toutes les cartes associées à l'utilisateur
+    user_cards = (
+        db.query(UserCard)
+        .join(Card, UserCard.card_id == Card.id)  # Jointure pour récupérer les infos des cartes
+        .filter(UserCard.user_id == user_id, UserCard.obtained == True)  # Filtrer par user_id et cartes obtenues
+        .all()
+    )
 
-@router.get("/cards/{card_id}")
-async def get_card(card_id: int, db: Session = Depends(get_db)):
-    card = db.query(Card).filter(Card.id == card_id).first()
-    if not card:
-        raise HTTPException(status_code=404, detail="Carte non trouvée")
+    if not user_cards:
+        raise HTTPException(status_code=404, detail="Aucune carte trouvée pour cet utilisateur.")
 
-    return {
-        "id": card.id,
-        "name": card.name,
-        "image_url": card.image_url,
-        "rarity": card.rarity.name
-    }
-
-@router.get("/view_card/{card_id}", response_class=HTMLResponse)
-async def get_cards(db: Session = Depends(get_db)):
-    cards = db.query(Card).all()
-    return [
+    # Formater la réponse en JSON avec les infos des cartes
+    collection = [
         {
-            "name": card.name, 
-            "image_url": card.image_url, 
-            "rarity": card.rarity.name  # ✅ Convertir Rarity en string
-        } 
-        for card in cards
+            "card_name": user_card.card.name,
+            "image_url": user_card.card.image_url,
+            "rarity": user_card.card.rarity.name  # Assure-toi que `rarity` est bien une Enum
+        }
+        for user_card in user_cards
     ]
+
+    return {"user_id": user_id, "collection": collection}
