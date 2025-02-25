@@ -1,8 +1,8 @@
 from backend.app.models.Enums import Rarity
-from sqlalchemy.orm import Session 
+from sqlalchemy.orm import Session # type: ignore
 from backend.app.db.database import SessionLocal, engine, Base
 from backend.app.models.Card import Card
-# Assurez-vous d'importer vos modèles et votre instance Base    
+# init
 
 # Exemple de données : une liste de dictionnaires pour chaque carte
 cards_data = [

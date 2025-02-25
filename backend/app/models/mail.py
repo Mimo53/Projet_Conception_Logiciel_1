@@ -1,6 +1,6 @@
-from fastapi_mail import FastMail, ConnectionConfig
+from fastapi_mail import FastMail, ConnectionConfig # type: ignore
 import os
-from dotenv import load_dotenv
+from dotenv import load_dotenv # type: ignore
 
 load_dotenv()
 

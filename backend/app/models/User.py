@@ -1,6 +1,6 @@
-from pydantic import BaseModel, EmailStr
-from sqlalchemy import Column, String, Enum
-from sqlalchemy.orm import relationship
+from pydantic import BaseModel, EmailStr # type: ignore
+from sqlalchemy import Column, String, Enum # type: ignore
+from sqlalchemy.orm import relationship # type: ignore
 
 from backend.app.db.database import Base
 from backend.app.models.Enums import Role

@@ -1,7 +1,5 @@
-# backend/app/models/Card.py
-from pydantic import BaseModel
-from sqlalchemy import Column, Enum, ForeignKey, Integer, String, Boolean
-from sqlalchemy.orm import relationship
+from pydantic import BaseModel # type: ignore 
+from sqlalchemy import Column, Integer, String, Enum # type: ignore
 
 from backend.app.db.database import Base
 from backend.app.models.Enums import Rarity

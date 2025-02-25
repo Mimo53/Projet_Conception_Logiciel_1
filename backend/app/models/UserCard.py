@@ -1,11 +1,8 @@
 from typing import Optional
-
-from pydantic import BaseModel
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship
-
 from backend.app.db.database import Base
-
+from pydantic import BaseModel # type: ignore
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String # type: ignore
+from sqlalchemy.orm import relationship # type: ignore
 
 class UserCard(Base):
     __tablename__ = 'user_cards'

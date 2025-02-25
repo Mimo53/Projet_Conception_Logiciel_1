@@ -39,7 +39,6 @@ class Token(BaseModel):
     access_token: str
     token_type: str
 
-
 # Fonction pour vérifier le mot de passe
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
@@ -58,7 +57,6 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
-
 
 # Fonction pour authentifier un utilisateur
 def authenticate_user(username: str, password: str, db: Session):
@@ -335,3 +333,27 @@ async def view_collection(user_id: str, db: Session = Depends(get_db)):
     ]
 
     return {"user_id": user_id, "collection": collection}
+
+from backend.app.models.Enums import Role
+
+@router.post("/cartes_ajout")
+async def card_ajout(user_id: str, card_data: CardBase, db: Session = Depends(get_db)):
+    # 📌 Vérifier si l'utilisateur est Admin
+    user = db.query(User).filter(User.username == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="Utilisateur non trouvé")
+    if user.role != Role.ADMIN:
+        raise HTTPException(status_code=403, detail="Accès interdit : Vous devez être administrateur pour ajouter des cartes")
+
+    # 📌 Création de la carte
+    new_card = Card(
+        name=card_data.name,
+        image_url=card_data.image_url,
+        rarity=card_data.rarity
+    )
+
+    db.add(new_card)
+    db.commit()
+    db.refresh(new_card)
+
+    return {"message": "Carte ajoutée avec succès", "card": new_card}
