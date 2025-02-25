@@ -17,6 +17,7 @@ from io import BytesIO
 from email.mime.image import MIMEImage  # Importer MIMEImage pour manipuler les images
 import os 
 from tempfile import NamedTemporaryFile
+from fastapi.responses import HTMLResponse,JSONResponse
 
 # Configuration du JWT
 SECRET_KEY = "ma_super_cle_secrete"  # Change en production !
@@ -281,7 +282,7 @@ async def read_cards(skip: int = 0, limit: int = 10, db: Session = Depends(get_d
 ##Routes Booster
 
 from backend.app.services.BoosterService import BoosterService
-
+from backend.app.models.Booster import BoosterBuilder
 
 #ouvrir booster
 from backend.app.models.UserCard import UserCard
@@ -291,17 +292,46 @@ async def open_booster_and_add(user_id: str, db: Session = Depends(get_db)):
     builder = BoosterBuilder(db)
     cards = builder.with_random_cards().build()
 
+    user_cards = []
     for card in cards:
+        # Ajout de la carte à l'utilisateur
         user_card = UserCard(user_id=user_id, card_id=card.id, obtained=True)
         db.add(user_card)
 
+        # Conversion de l'objet SQLAlchemy en dict pour l'affichage
+        user_cards.append({
+            "id": card.id,
+            "name": card.name,
+            "image_url": card.image_url,  # ✅ On récupère l'URL
+            "rarity": card.rarity.name  # ✅ Conversion en string pour JSON
+        })
+
     db.commit()
 
-    return {"message": "Booster ouvert et cartes ajoutées à l'utilisateur.", "cards": cards}
+    return {"message": "Booster ouvert et cartes ajoutées à l'utilisateur.", "cards": user_cards}
 
 
+@router.get("/cards/{card_id}")
+async def get_card(card_id: int, db: Session = Depends(get_db)):
+    card = db.query(Card).filter(Card.id == card_id).first()
+    if not card:
+        raise HTTPException(status_code=404, detail="Carte non trouvée")
 
+    return {
+        "id": card.id,
+        "name": card.name,
+        "image_url": card.image_url,
+        "rarity": card.rarity.name
+    }
 
-
-    user_cards = db.query(UserCard).filter(UserCard.user_id == user_id, UserCard.obtained == True).all()
-    return user_cards
+@router.get("/view_card/{card_id}", response_class=HTMLResponse)
+async def get_cards(db: Session = Depends(get_db)):
+    cards = db.query(Card).all()
+    return [
+        {
+            "name": card.name, 
+            "image_url": card.image_url, 
+            "rarity": card.rarity.name  # ✅ Convertir Rarity en string
+        } 
+        for card in cards
+    ]
