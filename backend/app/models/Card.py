@@ -19,3 +19,5 @@ class CardBase(BaseModel):
     name: str
     image_url: str
     rarity: Rarity
+
+

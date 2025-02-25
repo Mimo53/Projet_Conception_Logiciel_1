@@ -284,35 +284,20 @@ from backend.app.services.BoosterService import BoosterService
 
 
 #ouvrir booster
-@router.post("/open_booster/", response_model=List[CardBase])
-async def open_booster(user_id: int, db: Session = Depends(get_db)):
-    """
-    Ouvre un booster pour l'utilisateur identifié par user_id.
-    Pour chaque carte obtenue, crée ou met à jour l'association dans la table UserCard.
-    Retourne la liste des cartes obtenues (sous forme de CardBase).
-    """
-    try:
-        # Appel du service pour ouvrir un booster et récupérer une liste de cartes
-        obtained_cards: List[Card] = open_booster(user_id=user_id, db=db)
-        
-        # Pour chaque carte obtenue, on vérifie et on crée ou met à jour l'association UserCard
-        for card in obtained_cards:
-            user_card = db.query(UserCard).filter(
-                UserCard.user_id == user_id,
-                UserCard.card_id == card.id
-            ).first()
-            if not user_card:
-                user_card = UserCard(user_id=user_id, card_id=card.id, obtained=True)
-                db.add(user_card)
-            else:
-                user_card.obtained = True
-        db.commit()
-        
-        # Retourner les cartes obtenues, en utilisant le schéma CardBase pour le format de réponse
-        return obtained_cards
-    except Exception as e:
-        db.rollback()
-        raise HTTPException(status_code=400, detail=str(e))
+from backend.app.models.UserCard import UserCard
+
+@router.post("/open_booster_and_add/")
+async def open_booster_and_add(user_id: str, db: Session = Depends(get_db)):
+    builder = BoosterBuilder(db)
+    cards = builder.with_random_cards().build()
+
+    for card in cards:
+        user_card = UserCard(user_id=user_id, card_id=card.id, obtained=True)
+        db.add(user_card)
+
+    db.commit()
+
+    return {"message": "Booster ouvert et cartes ajoutées à l'utilisateur.", "cards": cards}
 
 
 

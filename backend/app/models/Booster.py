@@ -1,58 +1,51 @@
+import random
 from typing import List
+from sqlalchemy.orm import Session
+from backend.app.models.Card import Card,CardBase
+from backend.app.models.Enums import Rarity
 from pydantic import BaseModel
-from sqlalchemy import Column, ForeignKey, Integer, String, Table
-from sqlalchemy.orm import relationship
-
-from backend.app.db.database import Base
-from backend.app.models.Card import CardBase,Card
-
-booster_cards = Table(
-    'booster_cards', Base.metadata,
-    Column('booster_id', Integer, ForeignKey('boosters.id'), primary_key=True),
-    Column('card_id', Integer, ForeignKey('cards.id'), primary_key=True)
-)
-
-class Booster(Base):
-    __tablename__ = 'boosters'
-
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, index=True)
-    cards = relationship("Card", secondary=booster_cards, back_populates="boosters")
 
 
 class BoosterBase(BaseModel):
     name: str
     cards: List[CardBase] = []
 
-import random
-from typing import List
-from backend.app.models.Card import Card
-from backend.app.models.Booster import Booster
-from backend.app.models.Enums import Rarity
+
+class Booster(BaseModel):  #
+    name: str
+    cards: List[CardBase] = []
 
 class BoosterBuilder:
-    def __init__(self, available_cards: List[Card]):
+    def __init__(self, db: Session):
         """
-        Constructeur du builder avec la liste complète des cartes disponibles.
+        Initialise le builder avec une session de base de données.
         """
-        self.available_cards = available_cards
+        self.db = db
         self.selected_cards: List[Card] = []
 
-    def with_random_cards(self, count: int) -> "BoosterBuilder":
+    def with_random_cards(self, count: int = 5) -> "BoosterBuilder":
         """
-        Sélectionne aléatoirement 'count' cartes parmi les cartes disponibles.
+        Sélectionne aléatoirement 'count' cartes avec des poids selon leur rareté.
         """
-        if count > len(self.available_cards):
-            raise ValueError("Pas assez de cartes disponibles pour sélectionner {} cartes.".format(count))
-        self.selected_cards = random.sample(self.available_cards, count)
+        all_cards = self.db.query(Card).all()
+        if len(all_cards) < count:
+            raise ValueError("Pas assez de cartes disponibles pour générer un booster.")
+
+        self.selected_cards = random.choices(
+            all_cards,
+            weights=[
+                (1 if card.rarity == Rarity.COMMUNE else
+                 0.5 if card.rarity == Rarity.RARE else
+                 0.1 if card.rarity == Rarity.SUPER_RARE else
+                 0.05)  # Légendaire
+                for card in all_cards
+            ],
+            k=count,
+        )
         return self
 
-    def build(self) -> Booster:
+    def build(self) -> List[Card]:
         """
-        Construit l'objet Booster en assignant la liste des cartes sélectionnées.
+        Retourne les cartes du booster.
         """
-        booster = Booster()
-        booster.cards = self.selected_cards
-        return booster
-
-
+        return self.selected_cards
