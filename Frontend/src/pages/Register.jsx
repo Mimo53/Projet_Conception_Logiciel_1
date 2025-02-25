@@ -8,10 +8,11 @@ function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [role, setRole] = useState("user");
+  const [role, setRole] = useState("User");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  console.log("// Ceci est un commentaire simulé dans la console");
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -20,7 +21,7 @@ function Register() {
 
     try {
       // Envoie la requête pour créer un nouvel utilisateur
-      await axios.post("/api/auth/register", {
+      await axios.post("http://localhost:8000/auth/register", {
         username,
         password,
         e_mail: email,  // Assurez-vous que le backend attend bien 'e_mail'
@@ -30,12 +31,14 @@ function Register() {
       // Redirige l'utilisateur vers la page de connexion après l'inscription
       navigate("/login");
     } catch (err) {
-      // Si une erreur détaillée est renvoyée par le backend
-      if (err.response && err.response.data.detail) {
-        setError(err.response.data.detail);
+      // Si l'erreur est un 422, affiche les détails
+      if (err.response && err.response.status === 422) {
+        console.error("Détails de l'erreur 422:", err.response.data);
+        setError("Erreur de validation des données : " + JSON.stringify(err.response.data));
       } else {
         setError("Erreur lors de la création de votre compte");
       }
+      
     } finally {
       setLoading(false);
     }
@@ -76,8 +79,8 @@ function Register() {
           <div className="input-container">
             <label>Rôle</label>
             <select value={role} onChange={(e) => setRole(e.target.value)}>
-              <option value="user">Utilisateur</option>
-              <option value="admin">Administrateur</option>
+              <option value="User">Utilisateur</option>
+              <option value="Admin">Administrateur</option>
             </select>
           </div>
           {error && <div className="error-message">{error}</div>}
