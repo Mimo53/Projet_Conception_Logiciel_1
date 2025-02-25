@@ -1,35 +1,65 @@
 .dashboard-container {
   text-align: center;
-  padding: 50px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh; /* Prend toute la hauteur de l'écran */
-  width: 100vw; 
+  height: 100vh; 
+  width: 100vw;
+  background-color: #080808; /* Arrière-plan sombre comme l'accueil */
+  color: white;
+  position: relative;
 }
 
-  
-  .dashboard-container h2 {
-    color: #333;
-    margin-bottom: 20px;
-  }
-  
-  .dashboard-container p {
-    font-size: 18px;
-    color: #666;
-  }
-  
-  .logout-button {
-    padding: 10px 20px;
-    background-color: #ff4d4d;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .logout-button:hover {
-    background-color: #e60000;
-  }
-  
+.dashboard-container h2 {
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.dashboard-container p {
+  font-size: 18px;
+  color: #cae919; /* Même couleur que le message API */
+  margin-bottom: 30px;
+}
+
+/* Conteneur des boutons */
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+/* Style des boutons */
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  color: white;
+}
+
+.collection-button {
+  background-color: #1e90ff; /* Bleu */
+}
+
+.booster-button {
+  background-color: #32cd32; /* Vert */
+}
+
+.logout-button {
+  background-color: #ff4d4d; /* Rouge */
+}
+
+.credits-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: #FF5733; /* Orange */
+}
+
+button:hover {
+  opacity: 0.8;
+}

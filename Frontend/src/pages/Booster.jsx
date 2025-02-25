@@ -10,7 +10,7 @@ function Booster() {
       <h1>Il est l'heure d'ouvrir un booster !</h1>
       <h1>C'est faux on peut pas encore</h1>
       {/* Bouton pour revenir à la page d'Accueil */}
-      <Link to="/Accueil">
+      <Link to="/dashboard">
         <button>Retour à l'accueil</button>
       </Link>
     </div>

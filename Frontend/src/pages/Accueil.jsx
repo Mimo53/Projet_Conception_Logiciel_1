@@ -44,13 +44,6 @@ function Accueil() {
           <button className="bienvenue-button">La magnifique page de bienvenue</button>
         </Link>
 
-        <Link to="/Booster">
-          <button>Ouvrir booster</button>
-        </Link>
-
-        <Link to="/Collection">
-          <button>Collection</button>
-        </Link>
 
         {/* Nouveau bouton "Se connecter" */}
         <Link to="/login">
