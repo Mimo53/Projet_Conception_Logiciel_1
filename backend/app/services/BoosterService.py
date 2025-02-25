@@ -5,7 +5,6 @@ from typing import List
 from sqlalchemy.orm import Session
 
 from backend.app.models.Card import Card
-from backend.app.models.Collection import Collection
 from backend.app.models.Enums import Rarity
 
 
@@ -13,7 +12,7 @@ class BoosterService:
     last_open_time = {}  # Dernier horaire d’ouverture de l'utilisateur
 
     @staticmethod
-    def open_booster(user_id: str, collection: Collection, db: Session, size: int = 5) -> List[Card]:
+    def open_booster(user_id: str, card: Card, db: Session, size: int = 5) -> List[Card]:
         current_time = time.time()
         last_time = BoosterService.last_open_time.get(user_id, 0)
 
@@ -23,13 +22,13 @@ class BoosterService:
 
         # Sélectionner des cartes en fonction de leur rareté
         selected_cards = random.choices(
-            collection.cards,
+            Card.cards,
             weights=[
                 (1 if card.rarity == Rarity.COMMUNE else
-                 0.5 if card.rarity == Rarity.RARE else
-                 0.1 if card.rarity == Rarity.SUPER_RARE else
-                 0.05)  # Légendaire
-                for card in collection.cards
+                0.5 if card.rarity == Rarity.RARE else
+                0.1 if card.rarity == Rarity.SUPER_RARE else
+                0.05)  # Légendaire
+                for card in Card.cards
             ],
             k=size,
         )

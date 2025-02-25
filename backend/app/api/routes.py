@@ -276,22 +276,6 @@ async def read_cards(skip: int = 0, limit: int = 10, db: Session = Depends(get_d
     return cards
 
 
-##Routes Collection
-from backend.app.models.Collection import Collection, CollectionBase
-
-
-@router.post("/collections/")
-async def create_collection(collection: CollectionBase, db: Session = Depends(get_db)):
-    db_collection = Collection(name=collection.name)
-    db.add(db_collection)
-    db.commit()
-    db.refresh(db_collection)
-    return {"message": "Collection créée avec succès", "collection": db_collection}
-
-@router.get("/collections/")
-async def read_collections(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-    collections = db.query(Collection).offset(skip).limit(limit).all()
-    return collections
 
 
 ##Routes Booster
@@ -300,74 +284,39 @@ from backend.app.services.BoosterService import BoosterService
 
 
 #ouvrir booster
-@router.post("/open_booster/")
-async def open_booster(user_id: str, collection_id: int, db: Session = Depends(get_db)):
-    collection = db.query(Collection).filter(Collection.id == collection_id).first()
-    if not collection:
-        raise HTTPException(status_code=404, detail="Collection not found")
-
+@router.post("/open_booster/", response_model=List[CardBase])
+async def open_booster(user_id: int, db: Session = Depends(get_db)):
+    """
+    Ouvre un booster pour l'utilisateur identifié par user_id.
+    Pour chaque carte obtenue, crée ou met à jour l'association dans la table UserCard.
+    Retourne la liste des cartes obtenues (sous forme de CardBase).
+    """
     try:
-        cards = BoosterService.open_booster(user_id, collection, db=db)
-        return {"cards": cards}
+        # Appel du service pour ouvrir un booster et récupérer une liste de cartes
+        obtained_cards: List[Card] = open_booster(user_id=user_id, db=db)
+        
+        # Pour chaque carte obtenue, on vérifie et on crée ou met à jour l'association UserCard
+        for card in obtained_cards:
+            user_card = db.query(UserCard).filter(
+                UserCard.user_id == user_id,
+                UserCard.card_id == card.id
+            ).first()
+            if not user_card:
+                user_card = UserCard(user_id=user_id, card_id=card.id, obtained=True)
+                db.add(user_card)
+            else:
+                user_card.obtained = True
+        db.commit()
+        
+        # Retourner les cartes obtenues, en utilisant le schéma CardBase pour le format de réponse
+        return obtained_cards
     except Exception as e:
+        db.rollback()
         raise HTTPException(status_code=400, detail=str(e))
-    
 
 
-# Soumission/Approbation/Rejet des cartes
-
-@router.post("/collections/{collection_id}/cards/")
-async def add_card_to_collection(collection_id: int, name: str, image_url: str, rarity: str, db: Session = Depends(get_db)):
-    db_card = Card(
-        name=name,
-        image_url=image_url,
-        rarity=rarity,
-        collection_id=collection_id
-    )
-    db.add(db_card)
-    db.commit()
-    db.refresh(db_card)
-    return {"message": "Carte ajoutée avec succès", "card": db_card}
-
-@router.put("/cards/{card_id}/approve/")
-async def approve_card(card_id: int, db: Session = Depends(get_db)):
-    db_card = db.query(Card).filter(Card.id == card_id).first()
-    if not db_card:
-        raise HTTPException(status_code=404, detail="Carte non trouvée")
-
-    db_card.is_approved = True
-    db.commit()
-    db.refresh(db_card)
-    return {"message": "Carte approuvée avec succès", "card": db_card}
-
-@router.delete("/cards/{card_id}/reject/")
-async def reject_card(card_id: int, db: Session = Depends(get_db)):
-    db_card = db.query(Card).filter(Card.id == card_id).first()
-    if not db_card:
-        raise HTTPException(status_code=404, detail="Carte non trouvée")
-
-    db.delete(db_card)
-    db.commit()
-    return {"message": "Carte rejetée avec succès"}
-
-#Route obtention de carte
-from backend.app.models.UserCard import UserCard, UserCardBase
 
 
-@router.post("/users/{user_id}/cards/{card_id}/obtain/", response_model=UserCardBase)
-async def obtain_card(user_id: int, card_id: int, db: Session = Depends(get_db)):
-    user_card = db.query(UserCard).filter(UserCard.user_id == user_id, UserCard.card_id == card_id).first()
-    if not user_card:
-        user_card = UserCard(user_id=user_id, card_id=card_id, obtained=True)
-        db.add(user_card)
-    else:
-        user_card.obtained = True
-    db.commit()
-    db.refresh(user_card)
-    return user_card
 
-#Endpoint collection d'un utilisateur
-@router.get("/users/{user_id}/obtained_cards/", response_model=List[UserCardBase])
-async def get_user_obtained_cards(user_id: int, db: Session = Depends(get_db)):
     user_cards = db.query(UserCard).filter(UserCard.user_id == user_id, UserCard.obtained == True).all()
     return user_cards

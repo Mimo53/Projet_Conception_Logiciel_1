@@ -1,8 +1,7 @@
-from backend.app.models.Card import Card
 from backend.app.models.Enums import Rarity
 from sqlalchemy.orm import Session 
 from backend.app.db.database import SessionLocal, engine, Base
-
+from backend.app.models.Card import Card
 # Assurez-vous d'importer vos modèles et votre instance Base    
 
 # Exemple de données : une liste de dictionnaires pour chaque carte
@@ -11,7 +10,9 @@ cards_data = [
     {"name": "Carte 2", "image_url": "https://drive.google.com/file/d/13TkP1XkDoGZY1mA5f9GE8DYVerVfTTfD/view", "rarity": Rarity.RARE},
     {"name": "Carte 3", "image_url": "https://drive.google.com/drive/u/1/folders/1GGl1EKo2j1Kq2W2PxqEm6j1NAXaOrU87", "rarity": Rarity.LEGENDAIRE},
     {"name": "Carte 4", "image_url": "https://drive.google.com/file/d/1f7ObQm4eKWZRIDkBvTJ7woYxbJnabJiD/view", "rarity": Rarity.LEGENDAIRE},
-    {"name": "Carte 5", "image_url": "https://drive.google.com/file/d/1S3z2FkCnoeeNEn7RdLacGnPfmG1DCRnh/view?usp=drive_link", "rarity": Rarity.COMMUNE}
+    {"name": "Carte 5", "image_url": "https://drive.google.com/file/d/1S3z2FkCnoeeNEn7RdLacGnPfmG1DCRnh/view?usp=drive_link", "rarity": Rarity.COMMUNE},
+    {"name": "Carte 6", "image_url": "https://drive.google.com/file/d/1T9GWvvBd9DQCoTJuQjwuSsIjnclDpfZ6/view?usp=drive_link", "rarity": Rarity.COMMUNE}
+
 ]
 
 def populate_cards():
@@ -23,7 +24,7 @@ def populate_cards():
                 image_url=card_info["image_url"],
                 rarity=card_info["rarity"]
             )
-            print(f"Insertion de la carte : {card.name}")  # Message de débogage
+            print(f"Insertion de la carte : {card.name}")  
             db.add(card)
         db.commit()
         print("Cartes insérées avec succès dans la base.")

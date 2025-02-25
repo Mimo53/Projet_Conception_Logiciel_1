@@ -1,10 +1,16 @@
 from typing import List
 from pydantic import BaseModel
-from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy import Column, ForeignKey, Integer, String, Table
 from sqlalchemy.orm import relationship
 
 from backend.app.db.database import Base
 from backend.app.models.Card import CardBase,Card
+
+booster_cards = Table(
+    'booster_cards', Base.metadata,
+    Column('booster_id', Integer, ForeignKey('boosters.id'), primary_key=True),
+    Column('card_id', Integer, ForeignKey('cards.id'), primary_key=True)
+)
 
 class Booster(Base):
     __tablename__ = 'boosters'
@@ -48,3 +54,5 @@ class BoosterBuilder:
         booster = Booster()
         booster.cards = self.selected_cards
         return booster
+
+

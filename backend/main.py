@@ -6,8 +6,7 @@ from backend.app.api.routes import router, router_auth
 from backend.app.db.database import Base, engine
 from backend.app.models import (  # Importe tous les modèles nécessaires
     Booster, Card)
-from backend.app.models.Booster_Cards_asso import (booster_cards,
-                                                   collection_cards)
+
 from backend.app.models.User import User, UserBase
 
 app = FastAPI()
