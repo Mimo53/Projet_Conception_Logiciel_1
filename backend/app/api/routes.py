@@ -1,23 +1,27 @@
-from typing import List, Annotated
-from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks, File, UploadFile
+import os
+from datetime import datetime, timedelta
+from email.mime.image import \
+    MIMEImage  # Importer MIMEImage pour manipuler les images
+from io import BytesIO
+from tempfile import NamedTemporaryFile
+from typing import Annotated, List
+
+from fastapi import (APIRouter, BackgroundTasks, Depends, File, HTTPException,
+                     UploadFile, status)
+from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi_mail import FastMail, MessageSchema
+from jose import ExpiredSignatureError, JWTError, jwt
 from passlib.context import CryptContext
+from pydantic import BaseModel
 from sqlalchemy import Column, String
 from sqlalchemy.orm import Session
-from pydantic import BaseModel
-from datetime import timedelta, datetime
-from jose import jwt, JWTError,ExpiredSignatureError
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from starlette import status
+
 from backend.app.db.database import get_db
+from backend.app.models.mail import conf
 from backend.app.models.User import User, UserBase, UserUpdate
 from backend.app.models.UserCard import UserCard, UserCardBase
-from starlette import status
-from fastapi_mail import FastMail, MessageSchema
-from backend.app.models.mail import conf
-from io import BytesIO
-from email.mime.image import MIMEImage  # Importer MIMEImage pour manipuler les images
-import os 
-from tempfile import NamedTemporaryFile
-from fastapi.responses import HTMLResponse,JSONResponse
 
 # Configuration du JWT
 SECRET_KEY = "ma_super_cle_secrete"  # Change en production !
@@ -250,6 +254,7 @@ async def upload_and_send(background_tasks: BackgroundTasks, file: UploadFile = 
 
 ##Routes Card
 from backend.app.models.Card import Card, CardBase
+
 db_dependency = Annotated[Session,Depends(get_db)]
 user_dependency= Annotated[dict,Depends(get_current_user)]
 
@@ -280,11 +285,11 @@ async def read_cards(skip: int = 0, limit: int = 10, db: Session = Depends(get_d
 
 ##Routes Booster
 
-from backend.app.services.BoosterService import BoosterService
 from backend.app.models.Booster import BoosterBuilder
-
 #ouvrir booster
 from backend.app.models.UserCard import UserCard
+from backend.app.services.BoosterService import BoosterService
+
 
 @router.post("/open_booster_and_add/")
 async def open_booster_and_add(user_id: str, db: Session = Depends(get_db)):
@@ -336,6 +341,7 @@ async def view_collection(user_id: str, db: Session = Depends(get_db)):
 
 from backend.app.models.Enums import Role
 
+
 @router.post("/cartes_ajout")
 async def card_ajout(user_id: str, card_data: CardBase, db: Session = Depends(get_db)):
     # 📌 Vérifier si l'utilisateur est Admin
@@ -357,3 +363,7 @@ async def card_ajout(user_id: str, card_data: CardBase, db: Session = Depends(ge
     db.refresh(new_card)
 
     return {"message": "Carte ajoutée avec succès", "card": new_card}
+
+@router.get("/auth/user_id")
+async def get_user_id(current_user: dict = Depends(get_current_user)):
+    return {"user_id": current_user["username"]}

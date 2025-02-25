@@ -30,6 +30,17 @@ function Login() {
       if (response.data.access_token) {
         // Stocke le token dans le localStorage
         localStorage.setItem("token", response.data.access_token);
+        
+        // Récupérer le username de l'utilisateur après connexion
+        try {
+          const userResponse = await axios.get("http://localhost:8000/auth/user_id", {
+            headers: { Authorization: `Bearer ${response.data.access_token}` }
+          });
+          console.log("Username récupéré : ", userResponse.data.user_id);
+          localStorage.setItem("user_id", userResponse.data.user_id);  // Stocke le username de l'utilisateur
+        } catch (err) {
+          console.error("Erreur lors de la récupération du username de l'utilisateur :", err);
+        }
 
         // Redirige l'utilisateur vers le Dashboard après la connexion
         navigate("/dashboard");
@@ -40,6 +51,7 @@ function Login() {
       setError("Identifiants incorrects. Essayez à nouveau.");
     }
   };
+
 
   return (
     <div className="login-container">
