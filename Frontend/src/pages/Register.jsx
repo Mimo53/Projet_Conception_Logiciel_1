@@ -1,4 +1,3 @@
-// src/pages/Register.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -7,17 +6,24 @@ import './Register.css';  // Assurez-vous que le fichier CSS est bien importé
 function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState(""); // Ajout de la confirmation de mot de passe
   const [email, setEmail] = useState("");
-  const [role, setRole] = useState("User");
+  const [role] = useState("User"); // Rôle par défaut
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  console.log("// Ceci est un commentaire simulé dans la console");
 
   const handleRegister = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
+
+    // Vérifie que les mots de passe correspondent
+    if (password !== confirmPassword) {
+      setError("Les mots de passe ne correspondent pas.");
+      setLoading(false);
+      return;
+    }
 
     try {
       // Envoie la requête pour créer un nouvel utilisateur
@@ -38,7 +44,6 @@ function Register() {
       } else {
         setError("Erreur lors de la création de votre compte");
       }
-      
     } finally {
       setLoading(false);
     }
@@ -77,11 +82,13 @@ function Register() {
             />
           </div>
           <div className="input-container">
-            <label>Rôle</label>
-            <select value={role} onChange={(e) => setRole(e.target.value)}>
-              <option value="User">Utilisateur</option>
-              <option value="Admin">Administrateur</option>
-            </select>
+            <label>Confirmation du mot de passe</label>
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
           </div>
           {error && <div className="error-message">{error}</div>}
           <div className="button-container">
