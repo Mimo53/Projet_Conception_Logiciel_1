@@ -1,19 +1,21 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.app.api.routes import router,router_auth
-from backend.app.db.database import Base, engine
-from backend.app.models.User import User,UserBase
-from backend.app.models.Booster_Cards_asso import booster_cards, collection_cards
-from backend.app.models import Card, Booster  # Importe tous les modèles nécessaires
 import backend.app.api.routes
+from backend.app.api.routes import router, router_auth
+from backend.app.db.database import Base, engine
+from backend.app.models import (  # Importe tous les modèles nécessaires
+    Booster, Card)
+from backend.app.models.Booster_Cards_asso import (booster_cards,
+                                                   collection_cards)
+from backend.app.models.User import User, UserBase
 
 app = FastAPI()
 
 # Configuration CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # URL de Vite en dev
+    allow_origins=["http://localhost:5173","http://localhost:5174"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

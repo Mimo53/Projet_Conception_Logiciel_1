@@ -1,7 +1,14 @@
 .dashboard-container {
-    text-align: center;
-    padding: 50px;
-  }
+  text-align: center;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Prend toute la hauteur de l'écran */
+  width: 100vw; 
+}
+
   
   .dashboard-container h2 {
     color: #333;
