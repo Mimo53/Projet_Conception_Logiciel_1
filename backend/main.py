@@ -6,7 +6,6 @@ from backend.app.api.routes import router, router_auth
 from backend.app.db.database import Base, engine
 from backend.app.models import (  # Importe tous les modèles nécessaires
     Booster, Card)
-
 from backend.app.models.User import User, UserBase
 
 app = FastAPI()
@@ -14,7 +13,7 @@ app = FastAPI()
 # Configuration CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173","http://localhost:5174"],
+    allow_origins=["http://localhost:5173", "http://localhost:5174"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
