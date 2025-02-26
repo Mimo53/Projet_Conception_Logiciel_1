@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.backend
+    ports:
+      - "${UVICORN_PORT}:${UVICORN_PORT}"
+    volumes:
+      - ./backend:/backend
+    env_file:
+      - .env  # Charge toutes les variables d'environnement
+    command: uvicorn app.main:app --host 0.0.0.0 --port ${UVICORN_PORT}
+
+  frontend:
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./Frontend:/frontend
+      - /frontend/node_modules
+    env_file:
+      - .env
+    command: npm run dev -- --host
+
+  db:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    ports:
+      - "${DATABASE_PORT}:${DATABASE_PORT}"
+    env_file:
+      - .env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
