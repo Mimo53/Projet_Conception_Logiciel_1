@@ -20,20 +20,28 @@ function Booster() {
     }
   }, []); // Se lance une seule fois au montage du composant
 
+  const token = localStorage.getItem("token"); // Récupère le token JWT stocké
+
   const openBooster = async () => {
     setLoading(true);
     try {
-      // Utilisation de l'état userId (username) plutôt que de refaire appel à localStorage
-      if (!userId) {
-        console.error("user_id non défini !");
+      if (!token) {
+        console.error("Token d'authentification manquant !");
         return;
       }
-  
-      const response = await axios.post("http://localhost:8000/open_booster_and_add/", {
-        user_id: userId,  // Assure-toi que cette clé correspond à ce que l'API attend
-      });
-  
-      console.log(response.data);  // Vérifie la réponse complète du serveur
+
+      const response = await axios.post(
+        "http://localhost:8000/open_booster_and_add/",
+        {},  // Pas besoin de body, car l'ID est extrait depuis le token
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Ajoute le token dans les headers
+          },
+          withCredentials: true, // Si l'authentification est basée sur des cookies
+        }
+      );
+
+      console.log(response.data);
       setCards(response.data.cards);
     } catch (error) {
       console.error("Erreur lors de l'ouverture du booster:", error);
@@ -41,6 +49,7 @@ function Booster() {
     }
     setLoading(false);
   };
+
   
 
 
