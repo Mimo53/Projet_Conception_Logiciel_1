@@ -1,7 +1,7 @@
 import os
 from datetime import datetime, timedelta
 from email.mime.image import \
-    MIMEImage  # Importer MIMEImage pour manipuler les images
+    MIMEImage  
 from io import BytesIO
 from tempfile import NamedTemporaryFile
 from typing import Annotated, List
@@ -11,7 +11,7 @@ from fastapi import (APIRouter, BackgroundTasks, Depends, File, HTTPException,
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi_mail import FastMail, MessageSchema
-from jose import ExpiredSignatureError, JWTError, jwt
+from jose import ExpiredSignatureError, JWTError, jwt # type: ignore
 from passlib.context import CryptContext
 from pydantic import BaseModel
 from sqlalchemy import Column, String
