@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "./Booster.css";
-import img_booster from "../assets/Photos/Booster_rd.jpeg";
+import img_booster from "../assets/Photos/booster.png";
 
 function Booster() {
   const [collections, setCollections] = useState([]);
