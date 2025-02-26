@@ -5,7 +5,12 @@ from backend.app.models.Card import Card,CardBase
 from backend.app.models.Enums import Rarity
 from pydantic import BaseModel # type: ignore
 
-poids={"commune":1,"legendaire":0.01,"rare":0.3,"super_rare":0.06}
+poids = {
+    "commune": 1,
+    "legendaire": 0.01,
+    "rare": 0.3,
+    "super_rare": 0.06
+}
 
 class BoosterBase(BaseModel):
     name: str
@@ -35,10 +40,10 @@ class BoosterBuilder:
         self.selected_cards = random.choices(
             all_cards,
             weights=[
-                (poids.commune if card.rarity == Rarity.COMMUNE else
-                poids.rare if card.rarity == Rarity.RARE else
-                poids.super_rare if card.rarity == Rarity.SUPER_RARE else
-                poids.legendaire)  
+                (poids["commune"]if card.rarity == Rarity.COMMUNE else
+                poids["rare"] if card.rarity == Rarity.RARE else
+                poids["super_rare"] if card.rarity == Rarity.SUPER_RARE else
+                poids["legendaire"])  
                 for card in all_cards
             ],
             k=count,

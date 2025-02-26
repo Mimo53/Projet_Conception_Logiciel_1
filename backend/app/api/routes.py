@@ -7,7 +7,7 @@ from tempfile import NamedTemporaryFile
 from typing import Annotated, List
 
 from fastapi import (APIRouter, BackgroundTasks, Depends, File, HTTPException,
-                     UploadFile, status)
+                    UploadFile, status)
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi_mail import FastMail, MessageSchema
@@ -263,18 +263,6 @@ async def user(user: user_dependency, db: db_dependency):
     # Affiche le nom d'utilisateur et l'email
     return {"User": user}
 
-@router.post("/cards/")
-async def create_card(card: CardBase, db: Session = Depends(get_db)):
-    db_card = Card(
-        name=card.name,
-        image_url=card.image_url,
-        rarity=card.rarity
-    )
-    db.add(db_card)
-    db.commit()
-    db.refresh(db_card)
-    return {"message": "Carte créée avec succès", "card": db_card}
-
 @router.get("/cards/")
 async def read_cards(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
     cards = db.query(Card).offset(skip).limit(limit).all()
@@ -292,7 +280,8 @@ from backend.app.services.BoosterService import BoosterService
 
 
 @router.post("/open_booster_and_add/")
-async def open_booster_and_add(user_id: str, db: Session = Depends(get_db)):
+async def open_booster_and_add(user: user_dependency,db: Session = Depends(get_db)):
+    user_id = user["username"]
     builder = BoosterBuilder(db)
     cards = builder.with_random_cards().build()
 
@@ -315,8 +304,9 @@ async def open_booster_and_add(user_id: str, db: Session = Depends(get_db)):
     return {"message": "Booster ouvert et cartes ajoutées à l'utilisateur.", "cards": user_cards}
 
 @router.get("/view_collections")
-async def view_collection(user_id: str, db: Session = Depends(get_db)):
-    # Récupérer toutes les cartes associées à l'utilisateur
+async def view_collection(user: user_dependency,db: Session = Depends(get_db)):
+    user_id = user["username"]
+# Récupérer toutes les cartes associées à l'utilisateur    
     user_cards = (
         db.query(UserCard)
         .join(Card, UserCard.card_id == Card.id)  # Jointure pour récupérer les infos des cartes
@@ -343,15 +333,20 @@ from backend.app.models.Enums import Role
 
 
 @router.post("/cartes_ajout")
-async def card_ajout(user_id: str, card_data: CardBase, db: Session = Depends(get_db)):
-    # 📌 Vérifier si l'utilisateur est Admin
+async def card_ajout(user: user_dependency, card_data: CardBase, db: Session = Depends(get_db)):
+    # Vérifier si l'utilisateur est Admin
+    user_id = user["username"]
     user = db.query(User).filter(User.username == user_id).first()
+
     if not user:
         raise HTTPException(status_code=404, detail="Utilisateur non trouvé")
-    if user.role != Role.ADMIN:
+
+    user_role = user.role  
+
+    if user_role != Role.ADMIN:
         raise HTTPException(status_code=403, detail="Accès interdit : Vous devez être administrateur pour ajouter des cartes")
 
-    # 📌 Création de la carte
+    # Création de la carte
     new_card = Card(
         name=card_data.name,
         image_url=card_data.image_url,
