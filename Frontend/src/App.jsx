@@ -1,4 +1,3 @@
-// src/App.jsx
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
@@ -8,8 +7,10 @@ import Boosters from './pages/Booster';
 import Collection from './pages/Collection';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Dashboard from './pages/Dashboard';  // Importation du Dashboard
-import PrivateRoute from './components/PrivateRoute';  // Importation de PrivateRoute
+import Dashboard from './pages/Dashboard';
+import AdminPage from './pages/AdminPage';
+import AddCardPage from './pages/AddCardPage';  // <-- Ajout ici
+import PrivateRoute from './components/PrivateRoute';
 
 function App() {
   return (
@@ -23,12 +24,30 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* Route protégée pour le Dashboard */}
         <Route
           path="/dashboard"
           element={
             <PrivateRoute>
               <Dashboard />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/admin"
+          element={
+            <PrivateRoute adminOnly={true}>
+              <AdminPage />
+            </PrivateRoute>
+          }
+        />
+
+        {/* Route protégée pour Ajouter une carte */}
+        <Route
+          path="/AddCard"
+          element={
+            <PrivateRoute adminOnly={true}>
+              <AddCardPage />
             </PrivateRoute>
           }
         />

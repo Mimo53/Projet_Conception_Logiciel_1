@@ -8,14 +8,13 @@
   height: 100vh; 
   width: 100vw;
   background-image: url('../assets/Photos/gengar.jpg');
-  background-size: cover; /* 🔥 L'image couvre toute la page */
-  background-position: center; /* 🔥 Centre l'image */
+  background-size: cover; /* L'image couvre toute la page */
+  background-position: center; /* Centre l'image */
   background-repeat: no-repeat;
   background-color: #080808; /* Arrière-plan sombre comme l'accueil */
   color: white;
   position: relative;
 }
-
 
 .dashboard-container h2 {
   color: #fff;
@@ -24,7 +23,7 @@
 
 .dashboard-container p {
   font-size: 18px;
-  color: #cae919; /* Même couleur que le message API */
+  color: #cae919; /* Couleur du texte */
   margin-bottom: 30px;
 }
 
@@ -34,6 +33,9 @@
   justify-content: center;
   gap: 15px;
   margin-top: 20px;
+  flex-wrap: wrap; /* Ajoute cette ligne pour permettre le retour à la ligne si les boutons ne tiennent pas sur une seule ligne */
+  width: 100%; /* Prend toute la largeur de l'écran */
+  max-width: 600px; /* Limite la largeur maximale des boutons */
 }
 
 /* Style des boutons */
@@ -56,6 +58,17 @@ button {
 
 .logout-button {
   background-color: #ff4d4d; /* Rouge */
+}
+
+.add-card-button {
+  background-color: #ff6347; /* Rouge tomate, couleur distincte */
+  /* Optionnel : ajouter des effets visuels comme un ombrage */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease-in-out;
+}
+
+.add-card-button:hover {
+  transform: scale(1.05); /* Effet de zoom au survol pour attirer l'attention */
 }
 
 .credits-button {

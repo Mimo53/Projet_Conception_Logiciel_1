@@ -59,6 +59,9 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     else:
         expire = datetime.utcnow() + timedelta(minutes=15)
     to_encode.update({"exp": expire})
+    
+    # Ajoute le rôle de l'utilisateur dans le token
+    to_encode.update({"role": data.get("role")})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
@@ -139,8 +142,13 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
             headers={"WWW-Authenticate": "Bearer"},
         )
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    # Ajoute le rôle de l'utilisateur dans le token
     access_token = create_access_token(
-        data={"sub": user.username}, expires_delta=access_token_expires
+        data={
+            "sub": user.username,
+            "role": str(user.role)  # Ajout du rôle ici
+        }, 
+        expires_delta=access_token_expires
     )
     return {"access_token": access_token, "token_type": "bearer"}
 
@@ -187,6 +195,7 @@ async def get_current_user(token: str = Depends(oauth2bearer), db: Session = Dep
         print(f"Decoded Payload: {payload}")  # Log pour afficher les données du payload
 
         username: str = payload.get("sub")
+        role: str = payload.get("role")  # Récupération du rôle depuis le token
 
         if username is None:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
@@ -199,7 +208,7 @@ async def get_current_user(token: str = Depends(oauth2bearer), db: Session = Dep
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
         # Retourne un dictionnaire avec le nom d'utilisateur et l'email (utiliser e_mail)
-        return {"username": username, "email": user.e_mail}  # Utilisation correcte de e_mail
+        return {"username": username, "email": user.e_mail, "role": role}  # Utilisation correcte de e_mail
 
     except JWTError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
@@ -335,15 +344,7 @@ from backend.app.models.Enums import Role
 @router.post("/cartes_ajout")
 async def card_ajout(user: user_dependency, card_data: CardBase, db: Session = Depends(get_db)):
     # Vérifier si l'utilisateur est Admin
-    user_id = user["username"]
-    user = db.query(User).filter(User.username == user_id).first()
-
-    if not user:
-        raise HTTPException(status_code=404, detail="Utilisateur non trouvé")
-
-    user_role = user.role  
-
-    if user_role != Role.ADMIN:
+    if user["role"] != Role.ADMIN:
         raise HTTPException(status_code=403, detail="Accès interdit : Vous devez être administrateur pour ajouter des cartes")
 
     # Création de la carte

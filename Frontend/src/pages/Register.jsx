@@ -104,6 +104,11 @@ function Register() {
             </button>
           </div>
         </form>
+
+        {/* Bouton pour revenir à l'accueil */}
+        <button onClick={() => navigate("/Accueil")} className="back-to-home-button">
+          Retour à l'accueil
+        </button>
       </div>
     </div>
   );
