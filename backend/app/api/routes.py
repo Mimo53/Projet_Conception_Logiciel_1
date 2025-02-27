@@ -1,4 +1,6 @@
 import os
+import requests
+import httpx
 from datetime import datetime, timedelta
 from email.mime.image import \
     MIMEImage  
@@ -8,7 +10,7 @@ from typing import Annotated, List
 
 from fastapi import (APIRouter, BackgroundTasks, Depends, File, HTTPException,
                     UploadFile, status)
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi_mail import FastMail, MessageSchema
 from jose import ExpiredSignatureError, JWTError, jwt # type: ignore
@@ -36,6 +38,7 @@ router_auth = APIRouter(
     prefix='/auth',
     tags=['auth']
 )
+router_proxy = APIRouter()
 
 fm = FastMail(conf)
 
@@ -363,3 +366,34 @@ async def card_ajout(user: user_dependency, card_data: CardBase, db: Session = D
 @router.get("/auth/user_id")
 async def get_user_id(current_user: dict = Depends(get_current_user)):
     return {"user_id": current_user["username"]}
+
+@router_proxy.get("/proxy-image/")
+async def proxy_image(url: str):
+    print(f"URL reçue par le backend : {url}")  # Affiche l'URL dans les logs du serveur
+    
+    if not url.startswith("https://drive.google.com/uc?export=view&id="):
+        print("URL incorrecte")
+        raise HTTPException(status_code=400, detail="URL non valide")
+   
+    # Autres traitements pour récupérer l'image
+    try:
+        # Effectuer une requête GET sur l'URL de l'image avec httpx
+        async with httpx.AsyncClient(follow_redirects=True) as client:
+            response = await client.get(url)
+
+        # Afficher les en-têtes pour déboguer
+        print(f"Response Status Code: {response.status_code}")
+        print(f"Response Headers: {response.headers}")
+        
+        # Vérifier que la requête a réussi
+        if response.status_code != 200:
+            raise HTTPException(status_code=404, detail="Image not found")
+
+        # Déterminer le type MIME du fichier
+        content_type = response.headers.get("Content-Type", "application/octet-stream")
+        
+        # Retourner l'image en tant que StreamingResponse
+        image_stream = BytesIO(response.content)
+        return StreamingResponse(image_stream, media_type=content_type)
+    except httpx.RequestError as e:
+        raise HTTPException(status_code=500, detail=f"Erreur lors du téléchargement de l'image: {str(e)}")
