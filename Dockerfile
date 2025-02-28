@@ -1,23 +1,21 @@
-FROM ubuntu:22.04
-
-# Mettre à jour et installer Python et pip
-RUN apt-get update && apt-get install -y python3 python3-pip && ln -s /usr/bin/python3 /usr/bin/python
+# Utiliser une image Python légère
+FROM python:3.10-slim
 
 # Définir le répertoire de travail
 WORKDIR /app
 
-# Copier les fichiers de notre projet dans l'environnement
+# Copier et installer les dépendances
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copier tout le backend dans le conteneur
 COPY . .
 
-# Installer les dépendances
-RUN python -m pip install --no-cache-dir -r requirements.txt
-
-# Exposer le port de l'application
+# Exposer le port FastAPI
 EXPOSE 8000
 
-# Créer un utilisateur sans privilèges root
-RUN useradd -m myuser
-USER myuser
-
 # Lancer l'application avec Uvicorn
-CMD ["uvicorn", "backend.app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["fastapi", "dev", "backend/main.py"]
+
+# docker run --name fastapi_backend --env-file .env -p 8000:8000 fastapi_app
+

@@ -1,41 +1,40 @@
-version: "3.8"
 
 services:
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile.backend
-    ports:
-      - "${UVICORN_PORT}:${UVICORN_PORT}"
-    volumes:
-      - ./backend:/backend
-    env_file:
-      - .env  # Charge toutes les variables d'environnement
-    command: uvicorn app.main:app --host 0.0.0.0 --port ${UVICORN_PORT}
-
-  frontend:
-    build:
-      context: ./Frontend
-      dockerfile: Dockerfile.frontend
-    ports:
-      - "5173:5173"
-    volumes:
-      - ./Frontend:/frontend
-      - /frontend/node_modules
-    env_file:
-      - .env
-    command: npm run dev -- --host
-
-  db:
-    image: postgres:15
+  postgres_db:
+    image: postgres:13
     container_name: postgres_db
     restart: always
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
     ports:
-      - "${DATABASE_PORT}:${DATABASE_PORT}"
-    env_file:
-      - .env
+      - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${DATABASE_USER}"]
+      interval: 10s
+      retries: 5
+
+  fastapi_backend:
+    build: .
+    container_name: fastapi_backend
+    restart: always
+    depends_on:
+      postgres_db:
+        condition: service_healthy
+    environment:
+      DATABASE_USER: ${DATABASE_USER}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_HOST: postgres_db
+      DATABASE_PORT: 5432
+      DATABASE_NAME: ${DATABASE_NAME}
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    command: ["fastapi", "dev", "backend/main.py"]
 
 volumes:
-  pgdata:
+  pg_data:
