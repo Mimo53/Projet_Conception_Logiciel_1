@@ -8,12 +8,11 @@ import re
 cards_data = [
     {"name": "Carte 1", "image_url": "https://drive.google.com/uc?export=view&id=1GMpNng-_6gFJyuUAqRm3A-ftWqOQfi_a", "rarity": Rarity.COMMUNE},
     {"name": "Carte 2", "image_url": "https://drive.google.com/uc?export=view&id=13TkP1XkDoGZY1mA5f9GE8DYVerVfTTfD", "rarity": Rarity.RARE},
-    {"name": "Carte 3", "image_url": "https://drive.google.com/uc?export=view&id=1GGl1EKo2j1Kq2W2PxqEm6j1NAXaOrU87", "rarity": Rarity.LEGENDAIRE},
+    {"name": "Carte 3", "image_url": "https://drive.google.com/uc?export=view&id=1ko369U4VrUVUU5Rj_9EjhwDXGCAFhPMh", "rarity": Rarity.LEGENDAIRE},
     {"name": "Carte 4", "image_url": "https://drive.google.com/uc?export=view&id=1f7ObQm4eKWZRIDkBvTJ7woYxbJnabJiD", "rarity": Rarity.LEGENDAIRE},
     {"name": "Carte 5", "image_url": "https://drive.google.com/uc?export=view&id=1S3z2FkCnoeeNEn7RdLacGnPfmG1DCRnh", "rarity": Rarity.COMMUNE},
     {"name": "Carte 6", "image_url": "https://drive.google.com/uc?export=view&id=1T9GWvvBd9DQCoTJuQjwuSsIjnclDpfZ6", "rarity": Rarity.COMMUNE}
 ]
-
 
 def extract_drive_id(url):
     """

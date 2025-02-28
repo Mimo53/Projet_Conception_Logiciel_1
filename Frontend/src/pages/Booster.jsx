@@ -7,13 +7,16 @@ import img_booster from "../assets/Photos/booster.png";
 function Booster() {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null); // Ajout de l'état pour gérer les erreurs
+  const [error, setError] = useState(null);
+  const [isBoosterOpened, setIsBoosterOpened] = useState(false);
+  const [currentCardIndex, setCurrentCardIndex] = useState(0);
+  const [showAllCards, setShowAllCards] = useState(false);
 
-  const token = localStorage.getItem("token"); // Récupère le token JWT stocké
+  const token = localStorage.getItem("token");
 
   const openBooster = async () => {
     setLoading(true);
-    setError(null); // Réinitialise l'erreur à chaque nouvelle tentative d'ouverture
+    setError(null);
     try {
       if (!token) {
         console.error("Token d'authentification manquant !");
@@ -22,7 +25,7 @@ function Booster() {
       }
 
       const response = await axios.post(
-        "http://localhost:8000/open_booster_and_add/", // Assurez-vous que cette route existe dans votre backend
+        "http://localhost:8000/open_booster_and_add/",
         {},
         {
           headers: {
@@ -32,50 +35,81 @@ function Booster() {
         }
       );
       setCards(response.data.cards);
+      setIsBoosterOpened(true); // On ouvre le booster après avoir récupéré les cartes
     } catch (error) {
       console.error("Erreur lors de l'ouverture du booster:", error);
-      console.error("Réponse du serveur:", error.response ? error.response.data : "Pas de réponse");
       setError("Erreur lors de l'ouverture du booster. Veuillez réessayer plus tard.");
     }
     setLoading(false);
   };
 
+  const handleImageError = (e, card) => {
+    console.error(`Erreur lors du chargement de l'image pour la carte : ${card.name}`);
+    e.target.src = "/path/to/default_image.png";
+  };
+
+  const showNextCard = () => {
+    if (currentCardIndex < cards.length - 1) {
+      setCurrentCardIndex(currentCardIndex + 1);
+    } else {
+      setShowAllCards(true); // Si on est sur la dernière carte, on montre toutes les cartes
+    }
+  };
+
   return (
     <div className="Booster-container">
-      <img src={img_booster} alt="Booster" width="19%" />
-      <h1>Ouvrir un booster</h1>
-      <button onClick={openBooster} disabled={loading}>
-        {loading ? "Ouverture..." : "Ouvrir un booster"}
-      </button>
+      {/* Si le booster n'est pas ouvert, on affiche l'image comme bouton */}
+      {!isBoosterOpened && (
+        <>
+          <img
+            src={img_booster}
+            alt="Booster"
+            className="booster-button"
+            onClick={openBooster}
+          />
+          <Link to="/dashboard">
+            <button className="home-button">Retour à l'accueil</button>
+          </Link>
+        </>
+      )}
+
+      {/* Si le booster est ouvert et qu'il y a des cartes, on affiche les cartes une par une */}
+      {isBoosterOpened && !showAllCards && cards.length > 0 && (
+        <div className="card-display" onClick={showNextCard}>
+          <img
+            src={`http://localhost:8000/proxy-image/?url=${encodeURIComponent(cards[currentCardIndex].image_url)}`}
+            alt={cards[currentCardIndex].name}
+            onError={(e) => handleImageError(e, cards[currentCardIndex])}
+          />
+          <p>{cards[currentCardIndex].name} - {cards[currentCardIndex].rarity}</p>
+        </div>
+      )}
+
+      {/* Si l'utilisateur a cliqué sur la dernière carte, on affiche toutes les cartes */}
+      {showAllCards && cards.length > 0 && (
+        <div className="cards-grid">
+          {cards.map((card, index) => (
+            <div key={index} className="card">
+              <img
+                src={`http://localhost:8000/proxy-image/?url=${encodeURIComponent(card.image_url)}`}
+                alt={card.name}
+                onError={(e) => handleImageError(e, card)}
+              />
+              <p>{card.name} - {card.rarity}</p>
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* Affichage de l'erreur */}
       {error && <div className="error-message">{error}</div>}
 
-      {cards.length > 0 && (
-        <div className="cards-container">
-          <h2>Cartes obtenues :</h2>
-          <div className="cards-grid">
-            {cards.map((card, index) => (
-              <div key={index} className="card">
-                {/* Modifie l'URL de l'image pour passer par le proxy */}
-                <img 
-                  src={`http://localhost:8000/proxy-image/?url=${encodeURIComponent(card.image_url)}`} 
-                  alt={card.name}
-                  onError={(e) => {
-                    console.error(`Erreur lors du chargement de l'image: ${card.image_url}`);
-                    e.target.src = "/path/to/default_image.png";  // Afficher une image par défaut en cas d'erreur
-                  }} 
-                />
-                <p>{card.name} - {card.rarity}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+      {/* Affichage du bouton de retour au dashboard quand toutes les cartes sont affichées */}
+      {showAllCards && (
+        <Link to="/dashboard">
+          <button className="home-button">Retour au Dashboard</button>
+        </Link>
       )}
-
-      <Link to="/dashboard">
-        <button>Retour à l'accueil</button>
-      </Link>
     </div>
   );
 }

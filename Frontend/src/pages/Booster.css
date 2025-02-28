@@ -1,75 +1,72 @@
-/* src/pages/Booster.css */
-
-/* Centrer le contenu horizontalement et verticalement */
+/* Définir l'image de fond en mosaïque */
 .Booster-container {
+  background-image: url('../assets/Photos/booster.png');
+  background-repeat: repeat; /* Répéter l'image en mosaïque */
+  background-size: auto; /* Taille automatique de l'image */
+  background-position: center;
+  min-height: 100vh; /* Assure que l'image couvre toute la hauteur de la fenêtre */
   display: flex;
-  justify-content: center;   /* Centre horizontalement */
-  align-items: center;       /* Centre verticalement */
-  height: 100vh;             /* Hauteur de 100% de la fenêtre */
-  width: 100vw;               /* Largeur de 100% de la fenêtre */
-  flex-direction: column;    /* Aligne les éléments verticalement */
-  text-align: center;        /* Centre le texte à l'intérieur des éléments */
-  background-color: #080808; /* Optionnel : couleur de fond */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
 }
 
-/* Style pour le bouton */
-button {
-  margin-top: 20px;
-  padding: 10px 20px;
-  font-size: 16px;
+/* Le bouton du booster en image */
+.booster-button {
   cursor: pointer;
-  background-color: #4CAF50;
-  color: white;
+  width: 200px; /* Ajuste la taille de l'image du booster */
+  height: auto;
   border: none;
-  border-radius: 5px;
+  margin: 20px 0;
 }
 
-button:hover {
-  background-color: #45a049;
+/* Conteneur pour les cartes */
+.card-display {
+  text-align: center;
+  cursor: pointer;
 }
 
-/* Style pour les messages d'erreur */
-.error-message {
-  background-color: #f8d7da;
-  color: #721c24;
-  padding: 10px;
-  border: 1px solid #f5c6cb;
-  border-radius: 5px;
-  margin-top: 10px;
-  font-size: 14px;
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 cartes par ligne */
+  gap: 10px;
+  margin-top: 20px;
 }
 
 /* Style des cartes */
-.cards-container {
-  margin-top: 20px;
-  width: 80%; /* Limiter la largeur de la zone des cartes */
-  display: flex;
-  flex-wrap: nowrap;  /* Empêche les cartes de passer à la ligne suivante */
-  justify-content: flex-start; /* Alignement des cartes sur la ligne */
-  gap: 15px; /* Espace entre les cartes */
-  overflow-x: auto;  /* Permet le défilement horizontal si les cartes dépassent la largeur de l'écran */
-}
-
-.card {
-  background-color: #fff;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  padding: 10px;
-  flex: 0 0 auto;  /* Empêche les cartes de se redimensionner */
-}
-
-/* Taille des images dans les cartes */
 .card img {
-  width: 150px;  /* Fixe la largeur de l'image */
-  height: 150px;  /* Fixe la hauteur de l'image */
-  object-fit: cover;  /* Maintient les proportions de l'image */
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* Style des textes des cartes */
 .card p {
   margin-top: 10px;
   font-size: 14px;
-  color: #333;
+  color: #fff; /* Texte blanc */
+}
+
+/* Bouton de retour au dashboard */
+.home-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  border: none;
+  background-color: #444;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.home-button:hover {
+  background-color: #555;
+}
+
+/* Pour l'affichage des erreurs */
+.error-message {
+  color: red;
+  font-size: 16px;
+  margin-top: 20px;
 }

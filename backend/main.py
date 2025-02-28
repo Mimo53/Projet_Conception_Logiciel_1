@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse
+from fastapi.responses import StreamingResponse, Response
 from contextlib import asynccontextmanager
 from io import BytesIO
 import requests
@@ -79,16 +79,24 @@ app.include_router(router_auth)
 @app.get("/proxy-image/")
 async def proxy_image(url: str):
     try:
-        response = requests.get(url)
+        # Utilisation de stream=True pour mieux gérer le flux de données
+        response = requests.get(url, stream=True)
         if response.status_code != 200:
             raise HTTPException(status_code=404, detail="Image non trouvée")
+
+        # Détection du Content-Type de l'image
+        content_type = response.headers.get("Content-Type", "image/jpeg")
         
-        # Envoi des en-têtes CORS appropriés
+        # En-têtes complets pour gérer le CORS et le cache
         headers = {
-            "Content-Type": response.headers["Content-Type"],
-            "Access-Control-Allow-Origin": "*",  # Permet l'accès à l'image depuis le frontend
+            "Content-Type": content_type,
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, OPTIONS",
+            "Access-Control-Allow-Headers": "Authorization, Content-Type",
+            "Cache-Control": "public, max-age=86400"  # Cache d'un jour
         }
-        return StreamingResponse(BytesIO(response.content), headers=headers)
+
+        # Utilisation de Response pour plus de contrôle sur les en-têtes
+        return Response(content=response.content, headers=headers, media_type=content_type)
     except requests.RequestException as e:
         raise HTTPException(status_code=400, detail="Erreur lors du téléchargement de l'image")
-
