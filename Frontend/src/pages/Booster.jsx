@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "./Booster.css";
@@ -11,6 +11,7 @@ function Booster() {
   const [isBoosterOpened, setIsBoosterOpened] = useState(false);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [showAllCards, setShowAllCards] = useState(false);
+  const [animationKey, setAnimationKey] = useState(0); // Clé pour forcer le re-rendu
 
   const token = localStorage.getItem("token");
 
@@ -51,6 +52,7 @@ function Booster() {
   const showNextCard = () => {
     if (currentCardIndex < cards.length - 1) {
       setCurrentCardIndex(currentCardIndex + 1);
+      setAnimationKey(prevKey => prevKey + 1); // Mettre à jour la clé pour forcer le re-rendu
     } else {
       setShowAllCards(true); // Si on est sur la dernière carte, on montre toutes les cartes
     }
@@ -75,13 +77,17 @@ function Booster() {
 
       {/* Si le booster est ouvert et qu'il y a des cartes, on affiche les cartes une par une */}
       {isBoosterOpened && !showAllCards && cards.length > 0 && (
-        <div className="card-display" onClick={showNextCard}>
+        <div
+          key={animationKey} // Utiliser la clé pour forcer le re-rendu
+          className={`card-display ${cards[currentCardIndex].rarity.toLowerCase().replace(' ', '_')}`}
+          onClick={showNextCard}
+        >
           <img
             src={`http://localhost:8000/proxy-image/?url=${encodeURIComponent(cards[currentCardIndex].image_url)}`}
             alt={cards[currentCardIndex].name}
             onError={(e) => handleImageError(e, cards[currentCardIndex])}
           />
-          <p>{cards[currentCardIndex].name} - {cards[currentCardIndex].rarity}</p>
+          <p>{cards[currentCardIndex].rarity}</p>
         </div>
       )}
 
@@ -89,7 +95,7 @@ function Booster() {
       {showAllCards && cards.length > 0 && (
         <div className="cards-grid">
           {cards.map((card, index) => (
-            <div key={index} className="card">
+            <div key={index} className={`card ${card.rarity.toLowerCase().replace(' ', '_')}`}>
               <img
                 src={`http://localhost:8000/proxy-image/?url=${encodeURIComponent(card.image_url)}`}
                 alt={card.name}
@@ -107,7 +113,7 @@ function Booster() {
       {/* Affichage du bouton de retour au dashboard quand toutes les cartes sont affichées */}
       {showAllCards && (
         <Link to="/dashboard">
-          <button className="home-button">Retour au Dashboard</button>
+          <button className="home-button">Retour à l'accueil</button>
         </Link>
       )}
     </div>
