@@ -50,12 +50,17 @@ Avant de commencer, assurez-vous d’avoir installé :
 
 ---
 
-### ▶️ Lancer l’application  
-1. **Démarrer le backend**  
+### ▶️ Lancer l’application
+1. **Télécharger les premières cartes**  
+   ```bash
+   python3 -m backend.app.db.Card_ajout
+   ```  
+
+2. **Démarrer le backend**  
    ```bash
    uvicorn backend.main:app --reload
    ```  
-2. **Démarrer le frontend**  
+3. **Démarrer le frontend**  
    ```bash
    cd Frontend
    npm run dev

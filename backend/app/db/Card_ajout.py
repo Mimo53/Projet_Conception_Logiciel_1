@@ -1,8 +1,12 @@
-from backend.app.models.Enums import Rarity
-from sqlalchemy.orm import Session  # type: ignore
-from backend.app.db.database import SessionLocal
-from backend.app.models.Card import Card
 import re
+
+from sqlalchemy.orm import Session  # type: ignore
+
+from backend.app.db.database import Base, SessionLocal, engine
+from backend.app.models.Card import Card
+from backend.app.models.Enums import Rarity
+
+Base.metadata.create_all(bind=engine)
 
 # Exemple de données : une liste de dictionnaires pour chaque carte
 cards_data = [
@@ -28,6 +32,35 @@ cards_data = [
     {"name": "Carte 22", "image_url": "https://drive.google.com/uc?export=view&id=1qInvREMPEoXRjflVxTjOvHE5TcTn17AP", "rarity": Rarity.LEGENDAIRE},
     {"name": "Carte 23", "image_url": "https://drive.google.com/uc?export=view&id=16hMKcCkpWvZ6I5fNCUDuaed7HAZ9U2MU", "rarity": Rarity.COMMUNE},
     {"name": "Carte 24", "image_url": "https://drive.google.com/uc?export=view&id=1UTDM01K8QX532wmJfCoRBmAled5tVly4", "rarity": Rarity.COMMUNE},
+    {"name": "1.18", "image_url": "https://drive.google.com/uc?export=view&id=1FDr4XR9ifvMpxd0UQXAhAn9-78CAWBgW", "rarity": Rarity.COMMUNE},
+    {"name": "Alban_Ex", "image_url": "https://drive.google.com/uc?export=view&id=1gefXK74DV80uA-ssvOcLOpnQcZJzA_hX", "rarity": Rarity.LEGENDAIRE},
+    {"name": "Alban", "image_url": "https://drive.google.com/uc?export=view&id=1Axn058492gTc6s1jN7xis6L-BqYr0gmB", "rarity": Rarity.COMMUNE},
+    {"name": "Andre", "image_url": "https://drive.google.com/uc?export=view&id=1iQZZXoQFucNcVZ4TrkQZfFc47sJV39d2", "rarity": Rarity.COMMUNE},
+    {"name": "Axel_Ex", "image_url": "https://drive.google.com/uc?export=view&id=1-ANT7wIDAfkH_etCmJFx--MhMWnCfPfz", "rarity": Rarity.SUPER_RARE},
+    {"name": "Axel", "image_url": "https://drive.google.com/uc?export=view&id=1aZLcHdpi0ADMELtYi2YMtA1IuWNJ0gp4", "rarity": Rarity.COMMUNE},
+    {"name": "Camille_Ex", "image_url": "https://drive.google.com/uc?export=view&id=1O0H02owmyUkxDw2OxmdBk8VWRXixe0mg", "rarity": Rarity.SUPER_RARE},
+    {"name": "Camille", "image_url": "https://drive.google.com/uc?export=view&id=1aJi7B5LyKwVmxDr-3JWIvrkkHVZQu2ra", "rarity": Rarity.COMMUNE},
+    {"name": "AX", "image_url": "https://drive.google.com/uc?export=view&id=1-oNDk4HT7p0D3cxjWPC_uA9SP6nJ_HBJ", "rarity": Rarity.RARE},
+    {"name": "Clementine", "image_url": "https://drive.google.com/uc?export=view&id=1M7GJoL-qh3lgk_Y8lZnpFYmP8jOI_zYa", "rarity": Rarity.COMMUNE},
+    {"name": "Dorian", "image_url": "https://drive.google.com/uc?export=view&id=1y3YrNrP-351NjxVjYXYbVWAvM-vnhfCg", "rarity": Rarity.RARE},
+    {"name": "Florian", "image_url": "https://drive.google.com/uc?export=view&id=1B7cr3c1izOIMtFdtZsSjoXJfX3zOgjNE", "rarity": Rarity.COMMUNE},
+    {"name": "Jolan", "image_url": "https://drive.google.com/uc?export=view&id=1-xmzBUxdewoUFBLYzQVHcNvbGp-v-j6_", "rarity": Rarity.RARE},
+    {"name": "Jules", "image_url": "https://drive.google.com/uc?export=view&id=1c3uMFLZP3mifRy2erbx-fl8RKdo6g2sa", "rarity": Rarity.RARE},
+    {"name": "Lorane", "image_url": "https://drive.google.com/uc?export=view&id=1qrYayRzfPa2ObuzvuKGTuTPN8mSJ1hHl", "rarity": Rarity.COMMUNE},
+    {"name": "Mathieu_Ex", "image_url": "https://drive.google.com/uc?export=view&id=1wPSGs6wJZBgchU5Hu8KUqKJ_i5VTjOGy", "rarity": Rarity.SUPER_RARE},
+    {"name": "Mathieu", "image_url": "https://drive.google.com/uc?export=view&id=1zvxiI3LRMaxnbSgd6wIzHlGlQua5RM6c", "rarity": Rarity.RARE},
+    {"name": "Matteo", "image_url": "https://drive.google.com/uc?export=view&id=1hHte8n_TVaGzKI4VFAWkR_KqZrXM14ok", "rarity": Rarity.RARE},
+    {"name": "Maxence_Ex", "image_url": "https://drive.google.com/uc?export=view&id=180VeHGpFG5nwFX2UQypUSzb_AIkHH-n_", "rarity": Rarity.SUPER_RARE},
+    {"name": "Maxence", "image_url": "https://drive.google.com/uc?export=view&id=1YM6nhxXFMJhAjhNCheF8qf0UAe7MAaxL", "rarity": Rarity.RARE},
+    {"name": "Momo", "image_url": "https://drive.google.com/uc?export=view&id=1-Ippys8ZdarFKapyIe7lpFbfz2wVEBRW", "rarity": Rarity.COMMUNE},
+    {"name": "Nathan_Ex", "image_url": "https://drive.google.com/uc?export=view&id=13hmcufvedi1xe65BKPqFtNOwAsj3ogV2", "rarity": Rarity.SUPER_RARE},
+    {"name": "Nathan", "image_url": "https://drive.google.com/uc?export=view&id=13tkgqxaBM8UD7hz8YsfF1vXRAJriXAxd", "rarity": Rarity.SUPER_RARE},
+    {"name": "Souk_Ex", "image_url": "https://drive.google.com/uc?export=view&id=16m4XWXJCufd5h3s1gEy5UG0UjuAoT3ij", "rarity": Rarity.SUPER_RARE},
+    {"name": "Souk", "image_url": "https://drive.google.com/uc?export=view&id=1cvPfb0UJWj5aXMcw5azkxK6rEmbFzvt4", "rarity": Rarity.RARE},
+    {"name": "Vito_Ex", "image_url": "https://drive.google.com/uc?export=view&id=1jOXyL7EymIn5Xw3QiB3TNqS3SzXYAbks", "rarity": Rarity.SUPER_RARE},
+    {"name": "Vito", "image_url": "https://drive.google.com/uc?export=view&id=17I_lS0i8JxSIQiqLC7aYZF3VLye7unRg", "rarity": Rarity.COMMUNE},
+    {"name": "Paulin_Gx", "image_url": "https://drive.google.com/uc?export=view&id=1xCt86USG-7cv2WeBScx5DgD311Ve-r4T", "rarity": Rarity.SUPER_RARE},
+
 ]
 
 
