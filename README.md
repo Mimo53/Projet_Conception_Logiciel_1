@@ -68,5 +68,5 @@ Avant de commencer, assurez-vous d’avoir installé :
 
 ---
 
-## 📬 Contribuer  
+## 📬 Crédits 
 Ce projet a été créé par Mohamed, André et Dorian, vos fidèles serviteurs, sur une idée originale (on a les droits si on le crédite) de Florian !
