@@ -11,8 +11,25 @@ cards_data = [
     {"name": "Carte 3", "image_url": "https://drive.google.com/uc?export=view&id=1ko369U4VrUVUU5Rj_9EjhwDXGCAFhPMh", "rarity": Rarity.LEGENDAIRE},
     {"name": "Carte 4", "image_url": "https://drive.google.com/uc?export=view&id=1f7ObQm4eKWZRIDkBvTJ7woYxbJnabJiD", "rarity": Rarity.LEGENDAIRE},
     {"name": "Carte 5", "image_url": "https://drive.google.com/uc?export=view&id=1S3z2FkCnoeeNEn7RdLacGnPfmG1DCRnh", "rarity": Rarity.COMMUNE},
-    {"name": "Carte 6", "image_url": "https://drive.google.com/uc?export=view&id=1T9GWvvBd9DQCoTJuQjwuSsIjnclDpfZ6", "rarity": Rarity.COMMUNE}
+    {"name": "Carte 6", "image_url": "https://drive.google.com/uc?export=view&id=1T9GWvvBd9DQCoTJuQjwuSsIjnclDpfZ6", "rarity": Rarity.COMMUNE},
+    {"name": "Carte 9", "image_url": "https://drive.google.com/uc?export=view&id=1c4UcSwN9iw7Poc2YDKIUwR9tlNWhSCLC", "rarity": Rarity.COMMUNE},
+    {"name": "Carte 10", "image_url": "https://drive.google.com/uc?export=view&id=1ouppM2sN6sJPXtxKKg5WP1tFw9D1PpC9", "rarity": Rarity.RARE},
+    {"name": "Carte 11", "image_url": "https://drive.google.com/uc?export=view&id=1lzT7rYEPQLuPQnJcK1gBVKdrgdyod7KO", "rarity": Rarity.RARE},
+    {"name": "Carte 12", "image_url": "https://drive.google.com/uc?export=view&id=1xox8ShG6lAOquRfuMjmx1lRPxtKLykww", "rarity": Rarity.COMMUNE},
+    {"name": "Carte 13", "image_url": "https://drive.google.com/uc?export=view&id=16HDEfb63vD3igNnGM_H6AavVxSV-DfLf", "rarity": Rarity.COMMUNE},
+    {"name": "Carte 14", "image_url": "https://drive.google.com/uc?export=view&id=1-nR6YOVDtxtpVHat_rTypICD_NI4cx0t", "rarity": Rarity.COMMUNE},
+    {"name": "Carte 15", "image_url": "https://drive.google.com/uc?export=view&id=18eLD6Vs0OPh9UPxkFYLxrfYsrfHnXP1j", "rarity": Rarity.RARE},
+    {"name": "Carte 16", "image_url": "https://drive.google.com/uc?export=view&id=14xRs5Y3ZFfPW6wGnLr2kXA_sruuqmqKm", "rarity": Rarity.COMMUNE},
+    {"name": "Carte 17", "image_url": "https://drive.google.com/uc?export=view&id=1GfS0vyfn-XR5oZM2dMCEosn1g10xbImm", "rarity": Rarity.COMMUNE},
+    {"name": "Carte 18", "image_url": "https://drive.google.com/uc?export=view&id=13TzQYCqjlfFki8NyCsbUlYBLXBJQ0PXp", "rarity": Rarity.COMMUNE},
+    {"name": "Carte 19", "image_url": "https://drive.google.com/uc?export=view&id=1YVemrmP-6AvmssBKsMApnREmSBgXPaXL", "rarity": Rarity.RARE},
+    {"name": "Carte 20", "image_url": "https://drive.google.com/uc?export=view&id=1lI8M8LOdga8WGsZVEepfh-KFDw9be2qV", "rarity": Rarity.COMMUNE},
+    {"name": "Carte 21", "image_url": "https://drive.google.com/uc?export=view&id=1t6zHDEHSYV6zMDMWLNWXseajBEy1K6q2", "rarity": Rarity.LEGENDAIRE},
+    {"name": "Carte 22", "image_url": "https://drive.google.com/uc?export=view&id=1qInvREMPEoXRjflVxTjOvHE5TcTn17AP", "rarity": Rarity.LEGENDAIRE},
+    {"name": "Carte 23", "image_url": "https://drive.google.com/uc?export=view&id=16hMKcCkpWvZ6I5fNCUDuaed7HAZ9U2MU", "rarity": Rarity.COMMUNE},
+    {"name": "Carte 24", "image_url": "https://drive.google.com/uc?export=view&id=1UTDM01K8QX532wmJfCoRBmAled5tVly4", "rarity": Rarity.COMMUNE},
 ]
+
 
 def extract_drive_id(url):
     """

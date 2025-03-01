@@ -1,6 +1,9 @@
 {
   "dependencies": {
+    "@react-three/drei": "^10.0.3",
+    "@react-three/fiber": "^9.0.4",
     "axios": "^1.7.9",
-    "jwt-decode": "^4.0.0"
+    "jwt-decode": "^4.0.0",
+    "three": "^0.174.0"
   }
 }
