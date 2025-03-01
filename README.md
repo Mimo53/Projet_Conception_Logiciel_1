@@ -1,4 +1,4 @@
-# 🎴 Projet Info 2A : ENSAI TCG  
+# Projet Info 2A : ENSAI TCG  
 
 Bienvenue sur **ENSAI TCG**, un projet inspiré du célèbre Pokémon TCG ! 🚀  
 
@@ -26,8 +26,7 @@ Avant de commencer, assurez-vous d’avoir installé :
 ### 🛠️ Installation  
 1. **Cloner le projet**  
    ```bash
-   git clone https://github.com/votre-repo/ensai-tcg.git
-   cd ensai-tcg
+   Clonez le dépot git quoi (feur)
    ```  
 2. **Installer les dépendances**  
    ```bash
