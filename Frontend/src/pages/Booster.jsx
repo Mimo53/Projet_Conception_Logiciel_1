@@ -26,7 +26,7 @@ function Booster() {
       }
 
       const response = await axios.post(
-        "http://localhost:8000/open_booster_and_add/",
+        "http://localhost:8000/booster/open_booster_and_add/",
         {},
         {
           headers: {
