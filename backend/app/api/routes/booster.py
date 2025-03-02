@@ -13,6 +13,6 @@ router = APIRouter(prefix='/booster', tags=['booster'])
 async def open_booster(user: dict = Depends(get_current_user), db: Session = Depends(get_db)):
     return await open_booster_service(user, db)  # 🔥 On appelle bien le service ici !
 
-@router.get("/view_collection")
+@router.get("/view_collections")
 async def collection(user: dict = Depends(get_current_user), db: Session = Depends(get_db)):
     return await view_collection(user, db)
