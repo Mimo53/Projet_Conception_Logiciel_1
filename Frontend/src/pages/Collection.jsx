@@ -13,7 +13,7 @@ function Collection() {
   useEffect(() => {
     const fetchCollection = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/view_collections", {
+        const response = await axios.get("http://localhost:8000/booster/view_collections", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -53,7 +53,7 @@ function Collection() {
           {collection.map((card, index) => (
             <div key={index} className={`card ${card.rarity.toLowerCase().replace(' ', '_')}`}>
               <img
-                src={`http://localhost:8000/proxy-image/?url=${encodeURIComponent(card.image_url)}`}
+                src={`http://localhost:8000/proxy/proxy-image/?url=${encodeURIComponent(card.image_url)}`}
                 alt={card.card_name}
                 loading="lazy"
                 onError={(e) => handleImageError(e, card)}

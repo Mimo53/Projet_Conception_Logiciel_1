@@ -83,7 +83,7 @@ function Booster() {
           onClick={showNextCard}
         >
           <img
-            src={`http://localhost:8000/proxy-image/?url=${encodeURIComponent(cards[currentCardIndex].image_url)}`}
+            src={`http://localhost:8000/proxy/proxy-image/?url=${encodeURIComponent(cards[currentCardIndex].image_url)}`}
             alt={cards[currentCardIndex].name}
             onError={(e) => handleImageError(e, cards[currentCardIndex])}
           />
@@ -97,7 +97,7 @@ function Booster() {
           {cards.map((card, index) => (
             <div key={index} className={`card ${card.rarity.toLowerCase().replace(' ', '_')}`}>
               <img
-                src={`http://localhost:8000/proxy-image/?url=${encodeURIComponent(card.image_url)}`}
+                src={`http://localhost:8000/proxy/proxy-image/?url=${encodeURIComponent(card.image_url)}`}
                 alt={card.name}
                 onError={(e) => handleImageError(e, card)}
               />
