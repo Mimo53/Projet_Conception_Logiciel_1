@@ -1,46 +1,26 @@
-from io import BytesIO
-
+from fastapi import APIRouter, HTTPException
 import httpx
-from fastapi import APIRouter, Depends, HTTPException
-from fastapi.responses import Response, StreamingResponse
-from fastapi.security import OAuth2PasswordBearer
+from fastapi.responses import Response
 
-router = APIRouter(prefix='/proxy', tags=['proxy'])
+router = APIRouter()
 
-# OAuth2 password bearer pour extraire le token d'authentification
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
-# Fonction pour vérifier le token (tu peux ajuster selon ton système JWT)
-def verify_token(token: str):
-    if token != "ton_token_valide":  # Remplace par ta logique de validation du token JWT
-        return False
-    return True
-
-@router.get("/proxy-image/")
-async def proxy_image(url: str, token: str = Depends(oauth2_scheme)):
-    """
-    Proxy qui récupère une image externe et la renvoie avec les bons en-têtes CORS.
-    Nécessite une authentification via token.
-    """
-    # Vérifier le token JWT
-    if not verify_token(token):
-        raise HTTPException(status_code=403, detail="Token invalide")
-
+@router.get("/proxy/proxy-image/")
+async def proxy_image(url: str):
     try:
-        async with httpx.AsyncClient() as client:
+        # Utiliser httpx pour envoyer la requête à l'URL de l'image avec suivi des redirections
+        async with httpx.AsyncClient(follow_redirects=True) as client:  # Activer le suivi des redirections
             response = await client.get(url)
 
         if response.status_code != 200:
-            raise HTTPException(status_code=404, detail="Image non trouvée")
+            raise HTTPException(status_code=response.status_code, detail="Erreur de récupération de l'image")
 
-        # Détection du type de contenu
+        # Retourner l'image avec les bons headers
         content_type = response.headers.get("Content-Type", "image/jpeg")
-
         headers = {
             "Content-Type": content_type,
-            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Origin": "*",  # Permet les requêtes cross-origin
             "Access-Control-Allow-Methods": "GET, OPTIONS",
-            "Access-Control-Allow-Headers": "Authorization, Content-Type",
+            "Access-Control-Allow-Headers": "Content-Type",
             "Cache-Control": "public, max-age=86400"  # Cache d'un jour
         }
 
