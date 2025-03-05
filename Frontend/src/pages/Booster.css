@@ -68,7 +68,7 @@ body {
 
 /* Conteneur des images */
 .card-display {
-  padding-left: 20px; /* Décale légèrement l'image vers la droite */
+  padding-right: 20px; /* Décale légèrement l'image vers la droite */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -84,4 +84,23 @@ body {
   object-position: center;
   border-radius: 8px;
   margin-left: 45px;
+}
+
+.booster-container {
+  display: flex;
+  flex-direction: column; /* Afficher les éléments en colonne */
+  align-items: center; /* Centrer horizontalement */
+  gap: 20px; /* Espacement entre les éléments */
+}
+
+.home-button {
+  margin-top: 10px; /* Ajoute un espace au-dessus du bouton */
+}
+
+.booster-message {
+  font-size: 18px;
+  font-weight: bold;
+  color: rgb(22, 9, 9); /* Ajuste la couleur selon ton design */
+  text-align: center;
+  margin-bottom: 10px;
 }

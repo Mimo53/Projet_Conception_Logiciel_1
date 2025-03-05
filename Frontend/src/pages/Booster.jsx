@@ -67,18 +67,21 @@ function Booster() {
   return (
     <div className="Booster-container">
       {!isBoosterOpened && (
-        <>
+        <div className="booster-container">
+          <p className="booster-message">Clique sur le booster pour l'ouvrir !</p>
           <img
             src={img_booster}
             alt="Booster"
             className="booster-button"
             onClick={openBooster}
+            style={{ width: "250px", height: "auto" }}
           />
           <Link to="/dashboard">
             <button className="home-button">Retour à l'accueil</button>
           </Link>
-        </>
+        </div>
       )}
+
 
       {isBoosterOpened && !showAllCards && cards.length > 0 && (
         <div
