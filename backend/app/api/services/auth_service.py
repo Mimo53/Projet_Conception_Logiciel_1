@@ -6,10 +6,18 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
-from backend.app.core.config import (ACCESS_TOKEN_EXPIRE_MINUTES, ALGORITHM,
-                                     SECRET_KEY)
 from backend.app.db.database import get_db
 from backend.app.models.User import User, UserBase
+
+from dotenv import load_dotenv
+import os
+
+# Charger les variables d'environnement depuis le fichier .env
+load_dotenv()
+
+# Accéder aux variables d'environnement
+ALGORITHM = os.getenv("ALGORITHM")
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")

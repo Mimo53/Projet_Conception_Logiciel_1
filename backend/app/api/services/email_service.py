@@ -1,3 +1,7 @@
+"""
+Ce module contient des services pour l'envoi d'emails via FastAPI Mail.
+"""
+
 from fastapi_mail import FastMail, MessageSchema
 
 from backend.app.models.mail import conf
@@ -5,6 +9,18 @@ from backend.app.models.mail import conf
 fm = FastMail(conf)
 
 async def send_verification_email(email: str, username: str):
+    """
+    Envoie un email de vérification à l'utilisateur après son inscription.
+
+    Args:
+        email (str): L'adresse email de l'utilisateur.
+        username (str): Le nom d'utilisateur de l'utilisateur.
+
+    Returns:
+        None: La fonction envoie un email mais ne retourne rien.
+
+    Utilise FastMail pour envoyer un email contenant un lien de vérification.
+    """
     verification_link = f"http://localhost:8000/verify-email/{username}"
     message = MessageSchema(
         subject="Vérification de votre compte",

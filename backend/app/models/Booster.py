@@ -1,9 +1,15 @@
+"""
+Module pour la gestion des boosters de cartes.
+
+Ce module définit des classes pour créer et gérer des boosters de cartes,
+ainsi que des fonctionnalités pour sélectionner des cartes aléatoires selon leur rareté.
+"""
 import random
 from typing import List
-from sqlalchemy.orm import Session # type: ignore
-from backend.app.models.Card import Card,CardBase
-from backend.app.models.Enums import Rarity
 from pydantic import BaseModel # type: ignore
+from sqlalchemy.orm import Session # type: ignore
+from backend.app.models.Card import Card, CardBase
+from backend.app.models.Enums import Rarity
 
 poids = {
     "commune": 1,
@@ -13,11 +19,25 @@ poids = {
 }
 
 class BoosterBase(BaseModel):
+    """
+    Classe de base pour définir un booster de cartes.
+
+    Attributs :
+        name : str : Le nom du booster.
+        cards : List[CardBase] : Liste des cartes incluses dans le booster.
+    """
     name: str
     cards: List[CardBase] = []
 
 
-class Booster(BaseModel):  
+class Booster(BaseModel):
+    """
+    Classe représentant un booster contenant des cartes.
+
+    Attributs :
+        name : str : Le nom du booster.
+        cards : List[CardBase] : Liste des cartes contenues dans le booster.
+    """
     name: str
     cards: List[CardBase] = []
 
@@ -43,7 +63,7 @@ class BoosterBuilder:
                 (poids["commune"]if card.rarity == Rarity.COMMUNE else
                 poids["rare"] if card.rarity == Rarity.RARE else
                 poids["super_rare"] if card.rarity == Rarity.SUPER_RARE else
-                poids["legendaire"])  
+                poids["legendaire"])
                 for card in all_cards
             ],
             k=count,
