@@ -62,7 +62,7 @@ async def view_collection(user: dict, db: Session):
         user_id = user["username"]
         user_cards = (db.query(UserCard)
                         .join(Card, UserCard.card_id == Card.id)
-                        .filter(UserCard.user_id == user_id, UserCard.obtained is True)
+                        .filter(UserCard.user_id == user_id, UserCard.obtained == True)
                         .all())
 
         if not user_cards:

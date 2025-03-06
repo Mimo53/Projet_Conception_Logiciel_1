@@ -27,7 +27,6 @@ from backend.app.models.User import User, UserBase, UserUpdate
 load_dotenv()
 
 # Accéder aux variables d'environnement
-ALGORITHM = os.getenv("ALGORITHM")
 SECRET_KEY = os.getenv("SECRET_KEY")
 ACCESS_TOKEN_EXPIRE_MINUTES = 30 
 
