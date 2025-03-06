@@ -8,7 +8,7 @@ Ce projet vous permet d’ouvrir des boosters pour découvrir des cartes humoris
 
 ## 📌 Fonctionnalités  
 
-🔹 **Inscription et connexion sécurisée** avec vérification par email.  
+🔹 **Inscription et connexion sécurisée** avec vérification par email. 
 🔹 **Ouverture de boosters ENSAI** pour collectionner des cartes.  
 🔹 **Affichage de sa collection personnelle**.  
 🔹 **Ajout de cartes personnalisées** (format PNG ou PDF) via une demande validée par les administrateurs.  
@@ -48,6 +48,14 @@ Avant de commencer, assurez-vous d’avoir installé :
    DATABASE_NAME=...
    ```  
 
+   Pour utiliser les fonctionnalités liées au mail il faut rajouter au fichier `.env` :
+
+   ```env
+   MAIL_USERNAME=...
+   MAIL_PASSWORD=...
+   ```  
+
+   Si vous mettez une adresse email gmail faites attention.
 ---
 
 ### ▶️ Lancer l’application
