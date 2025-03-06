@@ -1,7 +1,8 @@
 """
 Module gérant l'authentification des utilisateurs via FastAPI.
 """
-
+import os
+from dotenv import load_dotenv
 from datetime import timedelta
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
@@ -20,8 +21,7 @@ from backend.app.api.services.email_service import send_verification_email
 from backend.app.db.database import get_db
 from backend.app.models.User import User, UserBase, UserUpdate
 
-from dotenv import load_dotenv
-import os
+
 
 # Charger les variables d'environnement depuis le fichier .env
 load_dotenv()
@@ -29,6 +29,7 @@ load_dotenv()
 # Accéder aux variables d'environnement
 ALGORITHM = os.getenv("ALGORITHM")
 SECRET_KEY = os.getenv("SECRET_KEY")
+ACCESS_TOKEN_EXPIRE_MINUTES = 30 
 
 # Définir la classe Token
 class Token(BaseModel): # pylint: disable=too-few-public-methods
