@@ -1,105 +1,106 @@
-/* Définir l'image de fond en mosaïque */
-.Booster-container {
-  background-image: url('../assets/Photos/booster.png');
+body {
+  background-image: url('../assets/Photos/booster.png'); /* Chemin de l'image */
+  background-size: auto; /* L'image sera affichée dans sa taille naturelle */
   background-repeat: repeat; /* Répéter l'image en mosaïque */
-  background-size: auto; /* Taille automatique de l'image */
-  background-position: center;
-  min-height: 100vh; /* Assure que l'image couvre toute la hauteur de la fenêtre */
+  background-position: top left; /* Positionner l'image en haut à gauche */
+  background-attachment: fixed; /* Fixe l'image en arrière-plan même lors du défilement */
+  margin: 0; /* Évite un décalage avec la bordure du corps */
+  padding: 0; /* Assure qu'il n'y a pas de marge autour du body */
+  padding-left: 50px; /* Ajoute un espace blanc sur le côté gauche (ajustez la valeur selon vos besoins) */
+}
+
+
+
+/* Style des cartes lorsqu'elles sont affichées une par une */
+.single-card {
+  width: 300px;
+  height: 420px;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 20px;
-}
-
-/* Le bouton du booster en image */
-.booster-button {
-  cursor: pointer;
-  width: 200px; /* Ajuste la taille de l'image du booster */
-  height: auto;
-  border: none;
-  margin: 20px 0;
-}
-
-/* Conteneur pour les cartes */
-.card-display {
   text-align: center;
-  cursor: pointer;
-  animation: reveal 0.5s ease-in-out;
-}
-
-.cards-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 cartes par ligne */
-  gap: 10px;
-  margin-top: 20px;
-}
-
-/* Style des cartes */
-.card img {
-  width: 100%;
-  height: auto;
   border-radius: 10px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  transition: transform 0.3s ease-in-out;
 }
 
-.card p {
-  margin-top: 10px;
-  font-size: 14px;
-  color: #fff; /* Texte blanc */
+/* Conteneur des cartes multiples */
+.cards-container {
+  display: flex; /* Utilise flexbox pour aligner les cartes */
+  flex-wrap: wrap; /* Permet aux cartes de s'ajuster sur plusieurs lignes */
+  gap: 20px; /* Espacement entre les cartes */
+  justify-content: space-between; /* Les cartes sont espacées uniformément */
+  margin-top: 20px; /* Ajoute un peu d'espace au-dessus du conteneur */
 }
 
-/* Bouton de retour au dashboard */
-.home-button {
-  margin-top: 20px;
-  padding: 10px 20px;
-  border: none;
-  background-color: #444;
-  color: white;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
+/* Style des cartes lorsqu'elles sont affichées toutes ensemble */
+.multiple-cards {
+  width: 250px;
+  height: 350px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  transition: transform 0.3s ease-in-out;
+  margin-bottom: 20px; /* Ajoute un espacement entre les lignes de cartes */
 }
 
-.home-button:hover {
-  background-color: #555;
-}
-
-/* Pour l'affichage des erreurs */
-.error-message {
-  color: red;
-  font-size: 16px;
-  margin-top: 20px;
-}
-
-/* Animations pour les raretés */
-@keyframes reveal {
-  from {
-    opacity: 0;
-    transform: scale(0.5);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
+/* Rareté des cartes */
 .card-display.commune {
-  animation-duration: 0.5s;
-  border: 10px solid #C0C0C0; /* Gris pour Commune */
+  border: 5px solid #C0C0C0; /* Gris */
 }
 
 .card-display.rare {
-  animation-duration: 0.7s;
-  border: 11px solid #007BFF; /* Bleu pour Rare */
+  border: 5px solid #007BFF; /* Bleu */
 }
 
 .card-display.super_rare {
-  animation-duration: 0.9s;
-  border: 12px solid #6610F2; /* Violet pour Super Rare */
+  border: 5px solid #6610F2; /* Violet */
 }
 
 .card-display.legendaire {
-  animation-duration: 1.1s;
-  border: 13px solid #FFC107; /* Or pour Légendaire */
+  border: 5px solid #FFC107; /* Or */
+}
+
+/* Conteneur des images */
+.card-display {
+  padding-right: 20px; /* Décale légèrement l'image vers la droite */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Style des images dans les cartes */
+.card-display img {
+  width: auto; /* Ajuste la largeur automatiquement */
+  max-width: 100%; /* Ne dépasse pas le cadre */
+  height: auto; /* Garde les proportions originales */
+  max-height: 100%; /* Ne dépasse pas le cadre */
+  object-fit: scale-down; /* Évite le rognage tout en remplissant le plus possible */
+  object-position: center;
+  border-radius: 8px;
+  margin-left: 45px;
+}
+
+.booster-container {
+  display: flex;
+  flex-direction: column; /* Afficher les éléments en colonne */
+  align-items: center; /* Centrer horizontalement */
+  gap: 20px; /* Espacement entre les éléments */
+}
+
+.home-button {
+  margin-top: 10px; /* Ajoute un espace au-dessus du bouton */
+}
+
+.booster-message {
+  font-size: 18px;
+  font-weight: bold;
+  color: rgb(22, 9, 9); /* Ajuste la couleur selon ton design */
+  text-align: center;
+  margin-bottom: 10px;
 }
