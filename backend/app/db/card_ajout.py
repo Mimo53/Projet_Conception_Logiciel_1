@@ -11,11 +11,8 @@ from sqlalchemy.orm import Session  # type: ignore
 
 from backend.app.db.database import Base, SessionLocal, engine
 from backend.app.models.card_model import Card
-<<<<<<< HEAD
 from backend.app.models.enums import Rarity
-=======
-from backend.app.models.booster_model import Rarity
->>>>>>> 07f1c7d92f261132671bfeec0ffb71a3bab1a472
+
 
 Base.metadata.create_all(bind=engine)
 
@@ -63,7 +60,6 @@ cards_data = [
     {"name": "Clementine", "image_url": "https://drive.google.com/uc?export=view&id=1M7GJoL-qh3lgk_Y8lZnpFYmP8jOI_zYa", "rarity": Rarity.COMMUNE}, # pylint: disable=line-too-long
     {"name": "Dorian", "image_url": "https://drive.google.com/uc?export=view&id=1y3YrNrP-351NjxVjYXYbVWAvM-vnhfCg", "rarity": Rarity.RARE}, # pylint: disable=line-too-long
     {"name": "Florian", "image_url": "https://drive.google.com/uc?export=view&id=1B7cr3c1izOIMtFdtZsSjoXJfX3zOgjNE", "rarity": Rarity.COMMUNE}, # pylint: disable=line-too-long
-    {"name": "Jolan", "image_url": "https://drive.google.com/uc?export=view&id=1-xmzBUxdewoUFBLYzQVHcNvbGp-v-j6_", "rarity": Rarity.RARE}, # pylint: disable=line-too-long
     {"name": "Jules", "image_url": "https://drive.google.com/uc?export=view&id=1c3uMFLZP3mifRy2erbx-fl8RKdo6g2sa", "rarity": Rarity.RARE}, # pylint: disable=line-too-long
     {"name": "Lorane", "image_url": "https://drive.google.com/uc?export=view&id=1qrYayRzfPa2ObuzvuKGTuTPN8mSJ1hHl", "rarity": Rarity.COMMUNE}, # pylint: disable=line-too-long
     {"name": "Mathieu_Ex", "image_url": "https://drive.google.com/uc?export=view&id=1wPSGs6wJZBgchU5Hu8KUqKJ_i5VTjOGy", "rarity": Rarity.SUPER_RARE}, # pylint: disable=line-too-long
