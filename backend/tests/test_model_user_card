@@ -1,4 +1,4 @@
-from backend.app.models.user_card_model import UserCard
+from backend.app.models.user_card import UserCard
 from backend.app.models.card_model import Card
 from backend.app.models.user_model import User
 

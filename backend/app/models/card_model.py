@@ -26,7 +26,4 @@ class CardBase(BaseModel):
     name: str
     image_url: str
     rarity: Rarity
-<<<<<<< HEAD
-=======
     # noqa: R0903
->>>>>>> 07f1c7d92f261132671bfeec0ffb71a3bab1a472
