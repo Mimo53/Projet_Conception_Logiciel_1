@@ -12,7 +12,7 @@ from sqlalchemy.orm import Session
 from backend.app.api.services.booster_service import \
     open_booster_and_add as open_booster_service
 from backend.app.api.services.booster_service import view_collection
-from backend.app.core.security import get_current_user
+from backend.app.api.services.auth_service import get_current_user
 from backend.app.db.database import get_db
 
 router = APIRouter(prefix='/booster', tags=['booster'])

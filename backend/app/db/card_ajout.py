@@ -10,8 +10,8 @@ import re
 from sqlalchemy.orm import Session  # type: ignore
 
 from backend.app.db.database import Base, SessionLocal, engine
-from backend.app.models.Card import Card
-from backend.app.models.Enums import Rarity
+from backend.app.models.card_model import Card
+from backend.app.models.booster_model import Rarity
 
 Base.metadata.create_all(bind=engine)
 

@@ -7,8 +7,9 @@ des utilisateurs via des tokens JWT.
 """
 
 import os
-from dotenv import load_dotenv
 from datetime import timedelta,datetime
+from dotenv import load_dotenv
+
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
@@ -16,7 +17,7 @@ from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
 from backend.app.db.database import get_db
-from backend.app.models.user_model import User,UserBase
+from backend.app.models.user_model import User
 
 # Charger les variables d'environnement depuis le fichier .env
 load_dotenv()
