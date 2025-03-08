@@ -1,7 +1,7 @@
 """
 Module des routes des cartes pour l'API.
 
-Ce module contient les routes pour récupérer les cartes et créer une nouvelle carte 
+Ce module contient les routes pour récupérer les cartes et créer une nouvelle carte
 pour un utilisateur dans le système.
 """
 

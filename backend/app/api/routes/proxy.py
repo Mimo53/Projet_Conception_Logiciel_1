@@ -52,4 +52,4 @@ async def proxy_image(url: str):
     except httpx.RequestError as exc:
         raise HTTPException(status_code=400,
                             detail="Erreur lors du téléchargement de l'image") from exc
-# La ligne vide ici pour pylint 
+# La ligne vide ici pour pylint

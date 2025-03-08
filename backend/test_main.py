@@ -13,6 +13,6 @@ def test_routes_exist():
     """Vérifie que les routes essentielles existent"""
     existing_routes = {route.path for route in app.routes}
     expected_routes = {"/api/hello", "/auth", "/cards", "/booster", "/proxy"}
-    
+
     # Vérifie que toutes les routes attendues sont bien présentes
     assert expected_routes.issubset(existing_routes)

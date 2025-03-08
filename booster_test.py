@@ -14,7 +14,7 @@ def mock_user():
 
 @pytest.fixture
 def mock_db():
-    return MagicMock()  
+    return MagicMock()
 
 @pytest.fixture
 def mock_open_booster_service():

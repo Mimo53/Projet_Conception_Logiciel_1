@@ -28,7 +28,7 @@ load_dotenv()
 
 # Accéder aux variables d'environnement
 SECRET_KEY = os.getenv("SECRET_KEY")
-ACCESS_TOKEN_EXPIRE_MINUTES = 30 
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 # Définir la classe Token
 class Token(BaseModel): # pylint: disable=too-few-public-methods

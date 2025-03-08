@@ -41,7 +41,7 @@ async def add_card(card_data: CardBase, db: Session, current_user: dict):
     """
     if current_user["role"] != Role.ADMIN:
         raise HTTPException(status_code=403,
-                            detail="Accès interdit : Vous devez être administrateur pour ajouter des cartes") 
+                            detail="Accès interdit : Vous devez être administrateur pour ajouter des cartes")
     new_card = Card(name=card_data.name, image_url=card_data.image_url, rarity=card_data.rarity)
     db.add(new_card)
     db.commit()

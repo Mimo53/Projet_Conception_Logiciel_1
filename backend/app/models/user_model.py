@@ -14,14 +14,14 @@ class User(Base):
     role = Column(Enum(Role))
     e_mail = Column(String, index=True)
 
-    user_cards = relationship("UserCard", back_populates ="user") 
-    
+    user_cards = relationship("UserCard", back_populates ="user")
+
 
 class UserBase(BaseModel):
-    username: str 
-    password: str 
-    role: Role 
-    e_mail: EmailStr | None = None 
+    username: str
+    password: str
+    role: Role
+    e_mail: EmailStr | None = None
 
 
 class UserUpdate(BaseModel):
