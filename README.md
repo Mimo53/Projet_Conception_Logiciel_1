@@ -20,7 +20,7 @@ Ce projet vous permet d’ouvrir des boosters pour découvrir des cartes humoris
 
 ### 📦 Prérequis
 Avant de commencer, assurez-vous d’avoir installé :
-- Python
+- Python 3.10
 - Node.js & npm
 
 ### 🛠️ Installation

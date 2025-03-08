@@ -54,3 +54,4 @@ watchfiles==1.0.4
 websockets==15.0
 requests
 pre-commit
+pytest-asyncio
