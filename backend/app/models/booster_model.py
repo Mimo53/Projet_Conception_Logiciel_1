@@ -42,6 +42,7 @@ class Booster(BaseModel):
     cards: List[CardBase] = []
 
 class BoosterBuilder:
+    "Builder pour booster comme en cours avec le sandwich"
     def __init__(self, db: Session):
         """
         Initialise le builder avec une session de base de données.
