@@ -20,7 +20,7 @@ Ce projet vous permet d’ouvrir des boosters pour découvrir des cartes humoris
 
 ### 📦 Prérequis
 Avant de commencer, assurez-vous d’avoir installé :
-- Python
+- Python 3.10
 - Node.js & npm
 
 ### 🛠️ Installation
@@ -38,7 +38,8 @@ Avant de commencer, assurez-vous d’avoir installé :
 
 3. **Créer le fichier `.env`**
 
-   Créez un fichier `.env` à la racine du projet et ajoutez les informations suivantes pour configurer votre base de données PostgreSQL :
+   Créez un fichier `.env` à la racine du projet et ajoutez les informations suivantes pour configurer votre base de données PostgreSQL
+   et pour pouvo :
 
    ```env
    DATABASE_USER=...
@@ -46,6 +47,8 @@ Avant de commencer, assurez-vous d’avoir installé :
    DATABASE_HOST=...
    DATABASE_PORT=...
    DATABASE_NAME=...
+   SECRET_KEY="ma_super_cle_secrete" # par exemple
+   ALGORITHM="HS256"
    ```
 
    Pour utiliser les fonctionnalités liées au mail il faut rajouter au fichier `.env` :
@@ -56,6 +59,7 @@ Avant de commencer, assurez-vous d’avoir installé :
    ```
 
    Si vous mettez une adresse email gmail faites attention.
+
 ---
 
 ### ▶️ Lancer l’application
