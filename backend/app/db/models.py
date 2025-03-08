@@ -19,4 +19,3 @@ class Card(Base):
 
     def __repr__(self):
         return f"<Card(id={self.id}, name={self.name}, rarity={self.rarity})>"
-

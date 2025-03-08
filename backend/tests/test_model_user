@@ -20,10 +20,10 @@ def test_create_user(db_session):
         role=Role.USER,
         e_mail="test@example.com"
     )
-    
+
     db_session.add(new_user)
     db_session.commit()
-    
+
     # Vérifie que l'utilisateur a bien été inséré
     db_user = db_session.query(User).filter(User.username == "test_user").first()
     assert db_user is not None
@@ -36,6 +36,6 @@ def test_user_update(db_session):
     user = db_session.query(User).filter(User.username == "test_user").first()
     user.e_mail = "new_email@example.com"
     db_session.commit()
-    
+
     updated_user = db_session.query(User).filter(User.username == "test_user").first()
     assert updated_user.e_mail == "new_email@example.com"

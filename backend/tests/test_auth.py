@@ -19,7 +19,7 @@ def db_session():
     # Créer les tables
     from backend.app.db.database import Base
     Base.metadata.create_all(bind=engine)
-    
+
     db = TestingSessionLocal()
     try:
         yield db
@@ -47,8 +47,7 @@ def test_create_access_token(client, test_user):
         "/auth/token", data={"username": test_user.username, "password": "testpassword"}
     )
     print("Response status:", response.status_code)
-    print("Response JSON:", response.json()) 
+    print("Response JSON:", response.json())
     assert response.status_code == 200
     assert "access_token" in response.json()
     assert "token_type" in response.json()
-

@@ -23,6 +23,6 @@ def test_routes_exist():
     print("Existing routes:", existing_routes)
     print("Expected routes:", expected_routes)
 
-    
+
     # Vérifie que toutes les routes attendues sont bien présentes
     assert expected_routes.issubset(existing_routes)
