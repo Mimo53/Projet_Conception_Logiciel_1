@@ -8,7 +8,7 @@ import os
 
 from dotenv import load_dotenv # type: ignore
 from sqlalchemy import create_engine # type: ignore
-from sqlalchemy.ext.declarative import declarative_base # type: ignore
+from sqlalchemy.orm import declarative_base # type: ignore
 from sqlalchemy.orm import sessionmaker # type: ignore
 
 # Charger les variables d'environnement depuis le fichier .env

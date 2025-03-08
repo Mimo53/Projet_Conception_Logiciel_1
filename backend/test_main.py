@@ -12,7 +12,17 @@ def test_hello_endpoint():
 def test_routes_exist():
     """Vérifie que les routes essentielles existent"""
     existing_routes = {route.path for route in app.routes}
-    expected_routes = {"/api/hello", "/auth", "/cards", "/booster", "/proxy"}
+    expected_routes = {
+        "/api/hello",
+        "/auth/register",
+        "/cards/",
+        "/booster/open_booster_and_add/",
+        "/booster/view_collections",
+        "/proxy/proxy-image/"
+    }
+    print("Existing routes:", existing_routes)
+    print("Expected routes:", expected_routes)
+
     
     # Vérifie que toutes les routes attendues sont bien présentes
     assert expected_routes.issubset(existing_routes)

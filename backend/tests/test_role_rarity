@@ -1,0 +1,16 @@
+from backend.app.models.enums import Role
+from backend.app.models.enums import Rarity
+
+
+def test_role_enum():
+    """Test de l'énumération Role"""
+    assert Role.ADMIN == "Admin"
+    assert Role.USER == "User"
+    assert Role.CLOWN == "Clown"
+
+def test_rarity_enum():
+    """Test de l'énumération Rarity"""
+    assert Rarity.COMMUNE == "Commune"
+    assert Rarity.RARE == "Rare"
+    assert Rarity.SUPER_RARE == "Super Rare"
+    assert Rarity.LEGENDAIRE == "Légendaire"
