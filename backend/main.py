@@ -3,12 +3,15 @@ Module principal de l'API ENSAI TCG.
 
 Ce module initialise l'application FastAPI, configure CORS et inclut les routeurs.
 """
-
+import os
 from contextlib import asynccontextmanager
+
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.app.api import auth_router, booster_router, cards_router, proxy_router
+from backend.app.api import (auth_router, booster_router, cards_router,
+                             proxy_router)
 from backend.app.db import Base, engine
 
 
@@ -27,16 +30,14 @@ async def lifespan(app=FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 # Configuration du middleware CORS
+
+load_dotenv()
+
+allow_origins = os.getenv("ALLOW_ORIGINS", "").split(',')
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "http://localhost:5174",
-        "http://localhost:8000",
-        "http://127.0.0.1:5173",
-        "http://localhost:3000",
-        "http://localhost:8000/proxy/proxy-image/"
-    ],
+    allow_origins=allow_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

@@ -8,15 +8,15 @@ Ce projet vous permet d’ouvrir des boosters pour découvrir des cartes humoris
 
 ## 📌 Fonctionnalités
 
-🔹 **Inscription et connexion sécurisée** avec vérification par email.
-🔹 **Ouverture de boosters ENSAI** pour collectionner des cartes.
-🔹 **Affichage de sa collection personnelle**.
-🔹 **Ajout de cartes personnalisées** (format PNG ou PDF) via une demande validée par les administrateurs.
-🔹 Peut-être des améliorations futures si on en a la foi ! (Non) 🚧
+- 🔹 **Inscription et connexion sécurisée** avec vérification par email.
+- 🔹 **Ouverture de boosters ENSAI** pour collectionner des cartes.
+- 🔹 **Affichage de sa collection personnelle**.
+- 🔹 **Ajout de cartes personnalisées** (format PNG ou PDF) via une demande validée par les administrateurs.
+- 🔹 Peut-être des améliorations futures si on en a la foi ! (Non) 🚧
 
 ---
 
-## 🚀 Installation & Lancement
+## 🚀 Quickstart
 
 ### 📦 Prérequis
 Avant de commencer, assurez-vous d’avoir installé :
@@ -38,25 +38,15 @@ Avant de commencer, assurez-vous d’avoir installé :
 
 3. **Créer le fichier `.env`**
 
-   Créez un fichier `.env` à la racine du projet et ajoutez les informations suivantes pour configurer votre base de données PostgreSQL :
-
-   ```env
-   DATABASE_USER=...
-   DATABASE_PASSWORD=...
-   DATABASE_HOST=...
-   DATABASE_PORT=...
-   DATABASE_NAME=...
+   Créez un fichier `.env` à la racine du projet et copiez-collez le contenu du fichier `.env.template`
+   Faisable facilement avec la commande suivante:
+   ```bash
+   cp .env.example .env
    ```
+   Modifiez ensuite les informations selon votre installation.
 
-   Pour utiliser les fonctionnalités liées au mail il faut rajouter au fichier `.env` :
 
-   ```env
-   MAIL_USERNAME=...
-   MAIL_PASSWORD=...
-   ```
 
-   Si vous mettez une adresse email gmail faites attention.
----
 
 ### ▶️ Lancer l’application
 1. **Télécharger les premières cartes**

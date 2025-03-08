@@ -32,7 +32,6 @@
 |---------|--------------------------|-------------------------------------------|------------------|
 | **GET**  | `/proxy/proxy-image/`     | Récupérer une image depuis une URL       | ❌               |
 
-📌 **Authentification requise :** Ajouter `Authorization: Bearer [TOKEN]` dans les requêtes protégées.
 
 ## Pour lancer le serveur Fastapi:
    ```bash
@@ -41,6 +40,6 @@
 
 ## Technologies utilisées:
 
-🔹 **FastAPI** pour l'API comme son nom l'indique.
-🔹 **PostgreSQL** pour la gestion de la base de données.
-🔹 **JWT** pour l'authentification et la gestion des tokens.
+- 🔹 **FastAPI** pour l'API comme son nom l'indique.
+- 🔹 **PostgreSQL** pour la gestion de la base de données.
+- 🔹 **JWT** pour l'authentification et la gestion des tokens.
