@@ -31,7 +31,7 @@ async def send_verification_email(email: str, username: str):
         Merci de vous être inscrit sur notre plateforme !
         Veuillez cliquer sur le lien suivant pour vérifier votre adresse e-mail :
 
-        {verification_link}
+        {verification_link} (le lien ne marche pas mais l'idée est là)
 
         Cordialement,
         L'équipe de support.
