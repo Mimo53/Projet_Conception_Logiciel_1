@@ -19,7 +19,7 @@ from backend.app.api.services.auth_service import (
 
 from backend.app.api.services.email_service import send_verification_email
 from backend.app.db.database import get_db
-from backend.app.models.User import User, UserBase, UserUpdate
+from backend.app.models.user_model import User, UserBase, UserUpdate
 
 
 

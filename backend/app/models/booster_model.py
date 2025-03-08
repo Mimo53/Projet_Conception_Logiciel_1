@@ -8,8 +8,8 @@ import random
 from typing import List
 from pydantic import BaseModel # type: ignore
 from sqlalchemy.orm import Session # type: ignore
-from backend.app.models.Card import Card, CardBase
-from backend.app.models.Enums import Rarity
+from backend.app.models.card_model import Card, CardBase
+from backend.app.models.enums import Rarity
 
 poids = {
     "commune": 1,

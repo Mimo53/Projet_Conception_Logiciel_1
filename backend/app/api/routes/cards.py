@@ -11,7 +11,7 @@ from sqlalchemy.orm import Session
 from backend.app.api.services.card_service import add_card, get_cards
 from backend.app.core.security import get_current_user
 from backend.app.db.database import get_db
-from backend.app.models.Card import CardBase
+from backend.app.models.card_model import CardBase
 router = APIRouter(prefix='/cards', tags=['cards'])
 
 @router.get("/")

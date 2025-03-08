@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';  // Importation correcte
-import './Dashboard.css';
+import './dashboard.css';
 
 function Dashboard() {
   const navigate = useNavigate();

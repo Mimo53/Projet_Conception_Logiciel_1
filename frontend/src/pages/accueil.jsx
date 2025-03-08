@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';  // Ajout des imports de useState et useEffect
 import { Link } from 'react-router-dom';
-import './Accueil.css';  // Importe le fichier CSS
-import img_Accueil from '../assets/Photos/Accueil.jpeg';
+import './accueil.css';  // Importe le fichier CSS
+import img_Accueil from '../assets/photos/accueil.jpeg';
 
 function Accueil() {
   const [message, setMessage] = useState('');  // Crée un state pour le message

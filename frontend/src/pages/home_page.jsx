@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './HomePage.css';  // Importe le fichier CSS
-import monImage from '../assets/Photos/Momo.png';
+import './home_page.css';  // Importe le fichier CSS
+import monImage from '../assets/photos/momo.png';
 
 function HomePage() {
   return (

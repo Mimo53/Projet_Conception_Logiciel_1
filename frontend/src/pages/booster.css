@@ -1,5 +1,5 @@
 body {
-  background-image: url('../assets/Photos/booster.png'); /* Chemin de l'image */
+  background-image: url('../assets/photos/booster.png'); /* Chemin de l'image */
   background-size: auto; /* L'image sera affichée dans sa taille naturelle */
   background-repeat: repeat; /* Répéter l'image en mosaïque */
   background-position: top left; /* Positionner l'image en haut à gauche */

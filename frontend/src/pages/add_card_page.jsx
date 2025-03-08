@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './AddCardPage.css';
+import './add_card_page.css';
 
 function AddCardPage() {
   const [name, setName] = useState('');

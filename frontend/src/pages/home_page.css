@@ -9,7 +9,7 @@
   width: 100vw;             /* Prendre toute la largeur de la fenêtre */
   flex-direction: column;   /* Les éléments seront alignés verticalement */
   text-align: center;       /* Centre le texte à l'intérieur des éléments */
-  background-image: url('../assets/Photos/Momo.png'); /* L'image comme fond */
+  background-image: url('../assets/photos/momo.png'); /* L'image comme fond */
   background-repeat: repeat; /* Répéter l'image pour créer l'effet mosaïque */
   background-size: 150px 150px;  /* Ajuster la taille des carreaux de la mosaïque */
   background-color: #0a0a0a; /* Optionnel : couleur de fond si l'image ne charge pas */

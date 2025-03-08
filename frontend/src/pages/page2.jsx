@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './Page2.css';  
-import videoFile from '../assets/Andre.mp4';  // Importer la vidéo
-import monImage from '../assets/Photos/Dorian.png'; // Importer l'image
-import audioFile from '../assets/Son_Andre.ogg';
+import './page2.css';  
+import videoFile from '../assets/andre.mp4';  // Importer la vidéo
+import monImage from '../assets/photos/dorian.png'; // Importer l'image
+import audioFile from '../assets/son_andre.ogg';
 
 function Page2() {
   return (

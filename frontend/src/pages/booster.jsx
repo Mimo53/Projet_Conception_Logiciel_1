@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import "./Booster.css";
-import img_booster from "../assets/Photos/booster.png";
+import "./booster.css";
+import img_booster from "../assets/photos/booster.png";
 
 function Booster() {
   const [cards, setCards] = useState([]);

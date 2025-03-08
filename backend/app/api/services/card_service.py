@@ -5,8 +5,8 @@ Ce module contient des services pour la gestion des cartes dans l'application.
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
-from backend.app.models.Card import Card, CardBase
-from backend.app.models.Enums import Role
+from backend.app.models.card_model import Card, CardBase
+from backend.app.models.enums import Role
 
 
 async def get_cards(skip: int, limit: int, db: Session):

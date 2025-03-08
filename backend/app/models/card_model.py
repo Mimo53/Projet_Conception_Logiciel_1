@@ -9,7 +9,7 @@ from pydantic import BaseModel # type: ignore
 from sqlalchemy import Column, Integer, String, Enum # type: ignore
 
 from backend.app.db.database import Base
-from backend.app.models.Enums import Rarity
+from backend.app.models.enums import Rarity
 
 class Card(Base):
     """

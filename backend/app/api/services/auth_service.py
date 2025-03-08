@@ -16,7 +16,7 @@ from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
 from backend.app.db.database import get_db
-from backend.app.models.User import User,UserBase
+from backend.app.models.user_model import User,UserBase
 
 # Charger les variables d'environnement depuis le fichier .env
 load_dotenv()

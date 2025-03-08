@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import './Collection.css';
+import './collection.css';
 
 function Collection() {
   const [collection, setCollection] = useState([]);

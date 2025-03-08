@@ -5,9 +5,9 @@ Ce module contient des services pour la gestion des boosters dans l'application.
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
-from backend.app.models.Booster import BoosterBuilder
-from backend.app.models.Card import Card
-from backend.app.models.UserCard import UserCard
+from backend.app.models.booster_model import BoosterBuilder
+from backend.app.models.card_model import Card
+from backend.app.models.user_card import UserCard
 
 async def open_booster_and_add(user: dict, db: Session):
     """

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import './Register.css';  // Assurez-vous que le fichier CSS est bien importé
+import './register.css';  // Assurez-vous que le fichier CSS est bien importé
 
 function Register() {
   const [username, setUsername] = useState("");

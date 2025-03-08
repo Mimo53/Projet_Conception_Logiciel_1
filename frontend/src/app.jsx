@@ -1,16 +1,16 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import HomePage from './pages/HomePage';
-import Page2 from './pages/Page2';
-import Accueil from './pages/Accueil';
-import Boosters from './pages/Booster';
-import Collection from './pages/Collection';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Dashboard from './pages/Dashboard';
-import AdminPage from './pages/AdminPage';
-import AddCardPage from './pages/AddCardPage';  // <-- Ajout ici
-import PrivateRoute from './components/PrivateRoute';
+import HomePage from './pages/home_page';
+import Page2 from './pages/page2';
+import Accueil from './pages/accueil';
+import Boosters from './pages/booster';
+import Collection from './pages/collection';
+import Login from './pages/login';
+import Register from './pages/register';
+import Dashboard from './pages/dashboard';
+import AdminPage from './pages/admin_page';
+import AddCardPage from './pages/add_card_page';  // <-- Ajout ici
+import PrivateRoute from './components/private_route';
 
 function App() {
   return (

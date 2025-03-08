@@ -7,7 +7,7 @@
   align-items: center;
   height: 100vh; 
   width: 100vw;
-  background-image: url('../assets/Photos/gengar.jpg');
+  background-image: url('../assets/photos/gengar.jpg');
   background-size: cover; /* L'image couvre toute la page */
   background-position: center; /* Centre l'image */
   background-repeat: no-repeat;
