@@ -40,11 +40,6 @@
 
 ## Technologies utilisées:
 
-<<<<<<< HEAD
-- 🔹 **FastAPI** pour l'API comme son nom l'indique.
-- 🔹 **PostgreSQL** pour la gestion de la base de données.
-- 🔹 **JWT** pour l'authentification et la gestion des tokens.
-=======
 🔹 **FastAPI** pour l'API comme son nom l'indique.
 🔹 **PostgreSQL** pour la gestion de la base de données.
 🔹 **JWT** pour l'authentification et la gestion des tokens.
@@ -60,4 +55,3 @@ Pour ce faire, les informations contenues dans le jeton sont signées à l’aid
 Cela permet notamment que ceux-ci un méchant hacker nous vole nos données il récupère seulement le tokens et non le mot de passe de notre client
 
 ![Exemple d'image](images/dessin_jwt.png)
->>>>>>> 04f9b279c61b8c27281df23c05d2871d328fb034
