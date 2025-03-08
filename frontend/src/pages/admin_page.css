@@ -6,7 +6,7 @@ body {
     margin: 0;
     background-color: #f5f5f5; /* Pour un léger contraste */
   }
-  
+
   .admin-page-container {
     background-color: #fff;
     color: #333;
@@ -17,4 +17,3 @@ body {
     width: 100%; /* Pour être responsive */
     text-align: center;
   }
-  

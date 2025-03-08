@@ -1,7 +1,7 @@
 """
 Module des routes des cartes pour l'API.
 
-Ce module contient les routes pour récupérer les cartes et créer une nouvelle carte 
+Ce module contient les routes pour récupérer les cartes et créer une nouvelle carte
 pour un utilisateur dans le système.
 """
 
@@ -9,7 +9,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from backend.app.api.services.card_service import add_card, get_cards
-from backend.app.core.security import get_current_user
+from backend.app.api.services.auth_service import get_current_user
 from backend.app.db.database import get_db
 from backend.app.models.card_model import CardBase
 router = APIRouter(prefix='/cards', tags=['cards'])

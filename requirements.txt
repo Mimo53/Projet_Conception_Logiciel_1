@@ -37,7 +37,6 @@ python-dotenv==1.0.1
 python-jose==3.4.0
 python-multipart==0.0.20
 PyYAML==6.0.2
-requirement.txt==0.1.0
 rich==13.9.4
 rich-toolkit==0.13.2
 rsa==4.9
@@ -54,3 +53,5 @@ uvloop==0.21.0
 watchfiles==1.0.4
 websockets==15.0
 requests
+pre-commit
+pytest-asyncio

@@ -11,7 +11,11 @@ from sqlalchemy.orm import Session  # type: ignore
 
 from backend.app.db.database import Base, SessionLocal, engine
 from backend.app.models.card_model import Card
+<<<<<<< HEAD
 from backend.app.models.enums import Rarity
+=======
+from backend.app.models.booster_model import Rarity
+>>>>>>> 07f1c7d92f261132671bfeec0ffb71a3bab1a472
 
 Base.metadata.create_all(bind=engine)
 

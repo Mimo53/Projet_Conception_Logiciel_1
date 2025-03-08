@@ -43,26 +43,26 @@ function AddCardPage() {
     <div className="add-card-container">
       <h2>Ajouter une carte à la collection</h2>
       <form onSubmit={handleSubmit}>
-        <input 
-          type="text" 
-          placeholder="Nom de la carte" 
-          value={name} 
-          onChange={(e) => setName(e.target.value)} 
-          required 
+        <input
+          type="text"
+          placeholder="Nom de la carte"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
         />
-        <input 
-          type="text" 
-          placeholder="URL de l'image" 
-          value={imageUrl} 
-          onChange={(e) => setImageUrl(e.target.value)} 
-          required 
+        <input
+          type="text"
+          placeholder="URL de l'image"
+          value={imageUrl}
+          onChange={(e) => setImageUrl(e.target.value)}
+          required
         />
-        <input 
-          type="text" 
-          placeholder="Rareté (ex: Commun, Rare, Légendaire)" 
-          value={rarity} 
-          onChange={(e) => setRarity(e.target.value)} 
-          required 
+        <input
+          type="text"
+          placeholder="Rareté (ex: Commun, Rare, Légendaire)"
+          value={rarity}
+          onChange={(e) => setRarity(e.target.value)}
+          required
         />
         <button type="submit" className="add-card-button">Ajouter la carte</button>
       </form>

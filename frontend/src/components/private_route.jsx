@@ -4,7 +4,7 @@ import jwt_decode from 'jwt-decode';  // Import pour décoder le token JWT
 
 const PrivateRoute = ({ children, adminOnly = false }) => {
   const token = localStorage.getItem('token');
-  
+
   // Vérifie si le token est présent
   if (!token) {
     return <Navigate to="/login" />;

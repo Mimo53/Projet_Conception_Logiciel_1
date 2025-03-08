@@ -7,8 +7,9 @@ des utilisateurs via des tokens JWT.
 """
 
 import os
-from dotenv import load_dotenv
 from datetime import timedelta,datetime
+from dotenv import load_dotenv
+
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
@@ -16,7 +17,7 @@ from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
 from backend.app.db.database import get_db
-from backend.app.models.user_model import User,UserBase
+from backend.app.models.user_model import User
 
 # Charger les variables d'environnement depuis le fichier .env
 load_dotenv()
@@ -59,7 +60,7 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
 
     Args:
         data (dict): Un dictionnaire contenant les informations à inclure dans le jeton.
-        expires_delta (timedelta | None, optional): 
+        expires_delta (timedelta | None, optional):
         La durée d'expiration du jeton. Si None, la valeur par défaut est 15 minutes.
 
     Returns:
@@ -109,12 +110,12 @@ async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = De
         db (Session, optional): La session de base de données pour interagir avec la table des utilisateurs.
 
     Raises:
-        HTTPException: 
+        HTTPException:
             - 401 si le jeton est invalide ou si l'utilisateur ne peut pas être validé.
             - 404 si l'utilisateur n'est pas trouvé dans la base de données.
 
     Returns:
-        dict: Un dictionnaire contenant les informations de l'utilisateur 
+        dict: Un dictionnaire contenant les informations de l'utilisateur
         (username, email, role) si authentifié avec succès.
     """
     try:
@@ -128,4 +129,3 @@ async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = De
         return {"username": username, "email": user.e_mail, "role": user.role}
     except JWTError as exc:
         raise HTTPException(status_code=401, detail="Could not validate user") from exc
-

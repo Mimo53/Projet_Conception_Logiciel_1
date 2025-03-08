@@ -11,7 +11,7 @@
     text-align: center;        /* Centre le texte à l'intérieur des éléments */
     background-color: #080808; /* Optionnel : couleur de fond */
   }
-  
+
   /* Style pour le bouton (facultatif) */
   button {
     margin-top: 20px;
@@ -23,7 +23,7 @@
     border: none;
     border-radius: 5px;
   }
-  
+
   button:hover {
     background-color: #45a049;
   }

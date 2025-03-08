@@ -14,7 +14,7 @@
   background-size: 150px 150px;  /* Ajuster la taille des carreaux de la mosaïque */
   background-color: #0a0a0a; /* Optionnel : couleur de fond si l'image ne charge pas */
 }
-  
+
   /* Style pour le bouton (facultatif) */
   button {
     margin-top: 20px;
@@ -26,8 +26,7 @@
     border: none;
     border-radius: 5px;
   }
-  
+
   button:hover {
     background-color: #45a049;
   }
-  
