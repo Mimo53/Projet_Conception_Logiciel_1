@@ -4,6 +4,7 @@ Test le main en regardant les routes et un endpoint de l'api
 
 from fastapi.testclient import TestClient
 from backend.main import app
+from backend.app.models.mail import conf
 
 client = TestClient(app)
 
