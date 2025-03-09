@@ -33,4 +33,4 @@ jobs:
 
     - name: Run tests
       run: |
-        pytest --maxfail=2 --disable-warnings
+        pytest backend/ --maxfail=2 --disable-warnings

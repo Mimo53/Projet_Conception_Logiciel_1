@@ -1,5 +1,8 @@
-# backend/app/models/card_model.py
+"""
+Module pour la gestion des boosters de cartes.
 
+Ce module définit des classes pour créer et gérer les cartes
+"""
 from pydantic import BaseModel  # type: ignore
 from sqlalchemy import Column, Integer, String, Enum  # type: ignore
 from backend.app.models.enums import Rarity  # Reste inchangé

@@ -1,5 +1,7 @@
-# backend/app/api/services/booster_service.py
+"""
+Module pour la gestion des boosters de cartes.
 
+"""
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from backend.app.models.booster_model import BoosterBuilder
@@ -7,6 +9,15 @@ from backend.app.models.card_model import Card
 from backend.app.models.user_card import UserCard
 
 async def open_booster_and_add(user: dict, db: Session):
+    """
+    Ouvre et fermer un booster
+    Args:
+        user (dict): Dictionnaire contenant les informations de l'utilisateur.
+        db (Session): Instance de la session de base de données.
+
+    Returns:
+        dict: 5 cartes du booster
+    """
     try:
         print(f"Requête reçue pour ouvrir un booster par {user['username']}")
         user_id = user["username"]
@@ -15,7 +26,8 @@ async def open_booster_and_add(user: dict, db: Session):
 
         # Vérification du nombre de cartes dans le booster
         if len(cards) < 5:
-            raise HTTPException(status_code=400, detail="Pas assez de cartes pour ouvrir un booster.")
+            raise HTTPException(status_code=400,
+                                detail="Pas assez de cartes pour ouvrir un booster.")
 
         user_cards = []
         for card in cards:

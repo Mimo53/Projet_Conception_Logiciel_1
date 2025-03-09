@@ -1,9 +1,12 @@
+"""
+Test pour ouvrir des booster. Un test si on a plus de 5 cartes
+un autre si on a moins de 5 cartes dans la collection.
+"""
 import pytest
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import MagicMock, patch
 from backend.app.api.services.booster_service import open_booster_and_add
 from backend.app.models.card_model import Card
-from backend.app.models.user_card import UserCard
-from fastapi import HTTPException
+
 
 @pytest.mark.asyncio
 async def test_open_booster_success():
