@@ -34,7 +34,32 @@ services:
       - "8000:8000"
     volumes:
       - .:/app
-    command: ["fastapi", "dev", "backend/main.py"]
+    command: ["/bin/sh", "-c", "python -m backend.app.db.card_ajout && uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload"]
+
+
+    dns:
+      - 8.8.8.8  # Serveur DNS public de Google
+
+  frontend:
+    image: node:20  # Remplace "node:18" par "node:20"
+    container_name: frontend
+    restart: always
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_URL: http://fastapi_backend:8000
+    volumes:
+      - ./frontend:/frontend
+      - /frontend/node_modules
+    working_dir: /frontend
+    command: ["sh", "-c", "npm install && npm run dev -- --host"]
+    depends_on:
+      - fastapi_backend
+    dns:
+      - 8.8.8.8
+
+
+
 
 volumes:
   pg_data:

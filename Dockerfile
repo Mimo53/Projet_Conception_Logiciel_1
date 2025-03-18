@@ -13,8 +13,3 @@ COPY . .
 
 # Exposer le port FastAPI
 EXPOSE 8000
-
-# Lancer l'application avec Uvicorn
-CMD ["fastapi", "dev", "backend/main.py"]
-
-# docker run --name fastapi_backend --env-file .env -p 8000:8000 fastapi_app
