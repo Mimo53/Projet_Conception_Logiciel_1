@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: application
+spec:
+  replicas: 1  # Nombre de réplicas de ton application
+  selector:
+    matchLabels:
+      app: application
+  template:
+    metadata:
+      labels:
+        app: application
+    spec:
+      containers:
+        - name: backend
+          image: dorianlemarrant/mon-backend:latest  # Image du backend
+          ports:
+            - containerPort: 8000
+          resources:
+            requests:
+              memory: "150Mi"  # Moins de mémoire demandée
+              cpu: "150m"      # Moins de CPU demandé
+            limits:
+              memory: "200Mi"  # Limite de mémoire identique à avant
+              cpu: "300m"      # Limite de CPU identique à avant
+          envFrom:
+            - configMapRef:
+                name: configuration-application  # Nom de ta configMap avec les variables d'environnement
+        - name: frontend
+          image: dorianlemarrant/mon-frontend:latest  # Image du frontend
+          ports:
+            - containerPort: 5173
+          resources:
+            requests:
+              memory: "150Mi"  # Moins de mémoire demandée pour le frontend
+              cpu: "150m"      # Moins de CPU demandé pour le frontend
+            limits:
+              memory: "200Mi"  # Limite de mémoire identique à avant
+              cpu: "300m"      # Limite de CPU identique à avant

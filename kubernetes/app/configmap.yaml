@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configuration-application
+data:
+  # Variables d'environnement pour la base de données
+  DATABASE_URL: "postgres://user:password@postgres-db:5432/mydb"  # À adapter selon ton user, password, nom de base et service PostgreSQL
+
+  # Variables d'environnement spécifiques à l'application
+  VITE_API_URL: "http://localhost:8000"  # Si tu veux utiliser une URL pour ton frontend en développement
+  VITE_ENVIRONNEMENT: "development"     # Par exemple, un environnement de développement pour Vite
+
+
+  # exemple api python
+  #API_URL: la valeur de l'url
+  #API_KEY: la valeur de la cle (attention a pas versionner ou dans un autre dépot privé)
+  # exemple appli vite
+  #VITE_API_URL: https://backend-conception-logicielle.kub.sspcloud.fr
+  #VITE_ENVIRONNEMENT: sspcloud-pd
+  #__VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS: "frontend-conception-logicielle.kub.sspcloud.fr"

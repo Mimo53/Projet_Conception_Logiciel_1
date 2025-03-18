@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  selector:
+    app: application  # Assure-toi que cette valeur correspond à celle définie dans le Deployment
+  ports:
+    - port: 80          # Port externe (accessible à l'extérieur si un Ingress est configuré)
+      targetPort: 8000   # Port interne, celui de ton backend dans le conteneur
+  type: ClusterIP  # Utilisation d'un service interne uniquement, tu peux le changer à LoadBalancer ou NodePort si nécessaire
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+spec:
+  selector:
+    app: application  # Même remarque ici, cela doit correspondre au label dans le Deployment
+  ports:
+    - port: 80          # Port externe pour accéder au frontend
+      targetPort: 5173   # Port interne de ton frontend dans le conteneur
+  type: ClusterIP  # Pareil, tu peux choisir un autre type selon ton besoin
